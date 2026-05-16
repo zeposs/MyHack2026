@@ -185,3 +185,102 @@ class DashboardStats(BaseModel):
     total_mentors: int
     active_programmes: int
     matches_generated: int
+
+
+# --- Create requests ---
+
+class StartupProfileCreate(BaseModel):
+    startup_name: str
+    business_summary: str
+    industry: Optional[str] = None
+    business_stage: Optional[str] = None
+    problem_statement: Optional[str] = None
+    solution_summary: Optional[str] = None
+    target_market: Optional[str] = None
+    business_model: Optional[str] = None
+    monthly_revenue: Optional[Decimal] = None
+    funding_needed: Optional[Decimal] = None
+    team_size: int = 1
+
+
+class ApplicationCreate(BaseModel):
+    programme_id: str
+    startup_profile_id: str
+    application_title: str
+    application_summary: Optional[str] = None
+    requested_amount: Optional[Decimal] = None
+
+
+# --- Sessions ---
+
+class MentorSessionCreate(BaseModel):
+    mentor_profile_id: str
+    scheduled_at: datetime
+    notes: Optional[str] = None
+
+
+class MentorSessionOut(BaseModel):
+    id: str
+    application_id: str
+    mentor_profile_id: str
+    startup_profile_id: str
+    scheduled_at: datetime
+    status: str
+    notes: Optional[str] = None
+    mentor_name: Optional[str] = None
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+# --- Ecosystem ---
+
+class EcosystemMentorNode(BaseModel):
+    id: str
+    name: str
+    sector: Optional[str] = None
+    status: str
+
+
+class EcosystemParticipantNode(BaseModel):
+    id: str
+    name: str
+    project: str
+    sector: Optional[str] = None
+    status: str
+
+
+class EcosystemLink(BaseModel):
+    mentor_id: str
+    participant_id: str
+    strength: float
+
+
+class EcosystemGraph(BaseModel):
+    mentors: list[EcosystemMentorNode]
+    participants: list[EcosystemParticipantNode]
+    links: list[EcosystemLink]
+
+
+# --- Startup health & financials ---
+
+class StartupHealthOut(BaseModel):
+    startup_name: str
+    owner: Optional[str] = None
+    status: str
+    mentor: Optional[str] = None
+    current_milestone_index: int
+    runway: str
+    burn: str
+    next_review: Optional[str] = None
+    highlights: list[str]
+
+
+class FinancialRecordOut(BaseModel):
+    quarter: str
+    revenue: Decimal
+    profit: Decimal
+
+    class Config:
+        from_attributes = True

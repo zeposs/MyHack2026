@@ -70,7 +70,10 @@ async def generate_matches(
     }
     mentor_dicts = [_build_mentor_dict(m, db) for m in mentors]
 
-    ranked = await rank_mentors(startup_dict, mentor_dicts)
+    try:
+        ranked = await rank_mentors(startup_dict, mentor_dicts)
+    except Exception as exc:
+        raise HTTPException(status_code=503, detail=f"AI service unavailable: {exc}")
 
     # Clear previous matches for this application
     db.query(MatchingResult).filter(MatchingResult.application_id == application_id).delete()

@@ -159,3 +159,27 @@ class ProjectMilestone(Base):
     ai_summary = Column(Text)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class MentorSession(Base):
+    __tablename__ = "mentor_sessions"
+
+    id = Column(String(36), primary_key=True, default=_uuid)
+    application_id = Column(String(36), ForeignKey("applications.id"), nullable=False)
+    mentor_profile_id = Column(String(36), ForeignKey("mentor_profiles.id"), nullable=False)
+    startup_profile_id = Column(String(36), ForeignKey("startup_profiles.id"), nullable=False)
+    scheduled_at = Column(DateTime, nullable=False)
+    status = Column(String(50), default="confirmed")  # confirmed, cancelled, completed
+    notes = Column(Text)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class FinancialRecord(Base):
+    __tablename__ = "financial_records"
+
+    id = Column(String(36), primary_key=True, default=_uuid)
+    startup_profile_id = Column(String(36), ForeignKey("startup_profiles.id"), nullable=False)
+    quarter = Column(String(20), nullable=False)  # e.g. "Q1 2025"
+    revenue = Column(Numeric(12, 2), default=0)
+    profit = Column(Numeric(12, 2), default=0)
+    created_at = Column(DateTime, default=datetime.utcnow)

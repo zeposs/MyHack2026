@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from database import get_db
 from models import Application, Programme, StartupProfile, User
 from routers.auth import get_current_user
-from schemas import ApplicationDetail, ApplicationOut, ApplicationStatusUpdate
+from schemas import ApplicationCreate, ApplicationDetail, ApplicationOut, ApplicationStatusUpdate
 
 router = APIRouter(prefix="/applications", tags=["applications"])
 
@@ -23,6 +23,35 @@ def _enrich(app: Application, db: Session) -> ApplicationDetail:
         programme_name=programme.name if programme else None,
         applicant_name=applicant.name if applicant else None,
     )
+
+
+@router.post("", response_model=ApplicationDetail, status_code=201)
+def create_application(
+    body: ApplicationCreate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    programme = db.query(Programme).filter(Programme.id == body.programme_id).first()
+    if not programme:
+        raise HTTPException(status_code=404, detail="Programme not found")
+
+    startup = db.query(StartupProfile).filter(StartupProfile.id == body.startup_profile_id).first()
+    if not startup:
+        raise HTTPException(status_code=404, detail="Startup profile not found")
+
+    app = Application(
+        programme_id=body.programme_id,
+        startup_profile_id=body.startup_profile_id,
+        applicant_user_id=current_user.id,
+        application_title=body.application_title,
+        application_summary=body.application_summary,
+        requested_amount=body.requested_amount,
+        status="submitted",
+    )
+    db.add(app)
+    db.commit()
+    db.refresh(app)
+    return _enrich(app, db)
 
 
 @router.get("", response_model=list[ApplicationDetail])
