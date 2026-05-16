@@ -14,6 +14,7 @@ import {
   FileText,
   Gauge,
   Handshake,
+  LogOut,
   Network,
   Send,
   ShieldCheck,
@@ -37,24 +38,37 @@ import {
 import {
   aiVerdict,
   applicant,
-  mentors,
-  milestones,
-  monitoringProject,
-  pnlData,
+  mentors as mockMentors,
+  milestones as mockMilestones,
+  monitoringProject as mockMonitoring,
+  pnlData as mockPnlData,
 } from './data/mockData';
 import EcosystemGraph from './components/EcosystemGraph';
+import LoginPage from './LoginPage';
+import {
+  adaptHealth,
+  adaptMatches,
+  adaptMilestones,
+  apiGet,
+  apiPatch,
+  apiPost,
+  clearToken,
+  getToken,
+  timeToISO,
+} from './api';
+import { DEMO_APP_ID, DEMO_STARTUP_ID } from './config';
 
 const tabs = [
   { id: 'participant', label: 'Participant', icon: UserRound },
-  { id: 'cradle', label: 'Cradle Admin', icon: ShieldCheck },
-  { id: 'ecosystem', label: 'Ecosystem', icon: Network },
-  { id: 'monitoring', label: 'Monitoring', icon: BarChart3 },
+  { id: 'cradle',      label: 'Cradle Admin', icon: ShieldCheck },
+  { id: 'ecosystem',   label: 'Ecosystem',    icon: Network },
+  { id: 'monitoring',  label: 'Monitoring',   icon: BarChart3 },
 ];
 
 const aiSteps = [
   'Analysing applicant profile',
   'Cross-checking funding guardrails',
-  'Scanning 50 mentor profiles',
+  'Scanning mentor profiles',
   'Scoring domain similarity',
   'Ranking by historical success rate',
 ];
@@ -68,38 +82,95 @@ function compactRM(value) {
 }
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('participant');
+  // ── Auth ────────────────────────────────────────────────────
+  const [user, setUser] = useState(null);
+
+  // ── UI flow state ───────────────────────────────────────────
+  const [activeTab, setActiveTab]           = useState('participant');
   const [applicationStatus, setApplicationStatus] = useState('draft');
-  const [aiStage, setAiStage] = useState('idle');
-  const [mentorFlow, setMentorFlow] = useState('shortlist_hidden');
-  const [expandedMentorId, setExpandedMentorId] = useState('aminah');
-  const [selectedMentor, setSelectedMentor] = useState(mentors[0]);
+  const [aiStage, setAiStage]               = useState('idle');
+  const [mentorFlow, setMentorFlow]         = useState('shortlist_hidden');
+  const [expandedMentorId, setExpandedMentorId] = useState(mockMentors[0]?.id);
+  const [selectedMentor, setSelectedMentor] = useState(mockMentors[0]);
   const [assignedMentorId, setAssignedMentorId] = useState(null);
-  const [bookingOpen, setBookingOpen] = useState(false);
+  const [bookingOpen, setBookingOpen]       = useState(false);
   const [sessionConfirmed, setSessionConfirmed] = useState(false);
-  const [sessionDetails, setSessionDetails] = useState({
-    date: '2026-05-21',
-    time: '10:30 AM',
-  });
+  const [sessionDetails, setSessionDetails] = useState({ date: '2026-05-21', time: '10:30 AM' });
   const reviewTimer = useRef(null);
 
+  // ── Live API data (null = fall back to mock) ─────────────────
+  const [stats, setStats]                   = useState(null);
+  const [apiMentors, setApiMentors]         = useState(null);
+  const [liveMonitoring, setLiveMonitoring] = useState(null);
+  const [liveMilestones, setLiveMilestones] = useState(null);
+  const [liveFinancials, setLiveFinancials] = useState(null);
+  const [monitoringReady, setMonitoringReady] = useState(false);
+
+  // ── Restore session on mount ─────────────────────────────────
   useEffect(() => {
-    return () => {
-      if (reviewTimer.current) {
-        window.clearTimeout(reviewTimer.current);
-      }
-    };
+    const token = getToken();
+    if (!token) return;
+    apiGet('/auth/me')
+      .then((u) => {
+        setUser(u);
+        fetchInitialData();
+      })
+      .catch(() => clearToken());
   }, []);
 
+  // Cleanup AI review timer
+  useEffect(() => {
+    return () => { if (reviewTimer.current) window.clearTimeout(reviewTimer.current); };
+  }, []);
+
+  // ── Data helpers ─────────────────────────────────────────────
+  async function fetchInitialData() {
+    apiGet('/dashboard/stats').then(setStats).catch(() => {});
+
+    Promise.all([
+      apiGet(`/startups/${DEMO_STARTUP_ID}/health`)
+        .then((h) => setLiveMonitoring(adaptHealth(h)))
+        .catch(() => {}),
+      apiGet(`/startups/${DEMO_STARTUP_ID}/milestones`)
+        .then((ms) => setLiveMilestones(adaptMilestones(ms)))
+        .catch(() => {}),
+      apiGet(`/startups/${DEMO_STARTUP_ID}/financials`)
+        .then(setLiveFinancials)
+        .catch(() => {}),
+    ]).finally(() => setMonitoringReady(true));
+  }
+
+  async function fetchMatches() {
+    const [matches, mentorList] = await Promise.all([
+      apiGet(`/applications/${DEMO_APP_ID}/matches`),
+      apiGet('/mentors'),
+    ]);
+    const mentorMap = Object.fromEntries(mentorList.map((m) => [m.id, m]));
+    return adaptMatches(matches, mentorMap);
+  }
+
+  // ── Auth handlers ────────────────────────────────────────────
+  function handleLogin(u) {
+    setUser(u);
+    fetchInitialData();
+  }
+
+  function handleLogout() {
+    clearToken();
+    setUser(null);
+    setApplicationStatus('draft');
+    setAiStage('idle');
+    setApiMentors(null);
+  }
+
+  // ── App flow handlers ────────────────────────────────────────
   function submitApplication() {
     setApplicationStatus('submitted');
     setSessionConfirmed(false);
   }
 
-  function startAiReview() {
-    if (reviewTimer.current) {
-      window.clearTimeout(reviewTimer.current);
-    }
+  async function startAiReview() {
+    if (reviewTimer.current) window.clearTimeout(reviewTimer.current);
 
     setActiveTab('cradle');
     setApplicationStatus('pending_review');
@@ -107,18 +178,26 @@ export default function App() {
     setMentorFlow('shortlist_hidden');
     setSessionConfirmed(false);
 
-    reviewTimer.current = window.setTimeout(() => {
-      setAiStage('verdict_ready');
-      setApplicationStatus('ai_reviewed');
-    }, 3000);
+    try {
+      await apiPost(`/applications/${DEMO_APP_ID}/generate-matches`);
+      const adapted = await fetchMatches();
+      setApiMentors(adapted);
+    } catch {
+      // Gemini unavailable or API error — use mock mentors
+    }
+
+    setAiStage('verdict_ready');
+    setApplicationStatus('ai_reviewed');
   }
 
   function approveApplication() {
+    const activeMentors = apiMentors ?? mockMentors;
     setApplicationStatus('approved');
     setMentorFlow('shortlist_visible');
-    setSelectedMentor(mentors[0]);
+    setSelectedMentor(activeMentors[0]);
     setAssignedMentorId(null);
-    setExpandedMentorId('aminah');
+    setExpandedMentorId(activeMentors[0]?.id);
+    apiPatch(`/applications/${DEMO_APP_ID}/status`, { status: 'approved' }).catch(() => {});
   }
 
   function openBooking(mentor) {
@@ -126,21 +205,42 @@ export default function App() {
     setBookingOpen(true);
   }
 
-  function confirmBooking(details) {
+  async function confirmBooking(details) {
     setSessionDetails(details);
     setBookingOpen(false);
     setMentorFlow('confirmed');
     setAssignedMentorId(selectedMentor?.id ?? null);
     setSessionConfirmed(true);
+
+    if (selectedMentor?.id) {
+      const scheduledAt = `${details.date}T${timeToISO(details.time)}:00`;
+      apiPost(`/applications/${DEMO_APP_ID}/matches/select`, {
+        mentor_profile_id: selectedMentor.id,
+      }).catch((e) => console.error('select mentor:', e));
+      apiPost(`/applications/${DEMO_APP_ID}/sessions`, {
+        mentor_profile_id: selectedMentor.id,
+        scheduled_at: scheduledAt,
+        notes: `Demo session booked: ${details.date} at ${details.time}`,
+      }).catch((e) => console.error('book session:', e));
+    }
   }
 
   const statusLabel = useMemo(() => {
-    if (applicationStatus === 'draft') return 'Draft';
-    if (applicationStatus === 'submitted') return 'Pending Review';
+    if (applicationStatus === 'draft')          return 'Draft';
+    if (applicationStatus === 'submitted')      return 'Pending Review';
     if (applicationStatus === 'pending_review') return 'AI Review Running';
-    if (applicationStatus === 'ai_reviewed') return 'AI Reviewed';
+    if (applicationStatus === 'ai_reviewed')    return 'AI Reviewed';
     return 'Approved';
   }, [applicationStatus]);
+
+  // ── Derived live data (fall back to mock when API not loaded) ─
+  const activeMentors     = apiMentors ?? mockMentors;
+  const activeMonitoring  = liveMonitoring ?? mockMonitoring;
+  const activeMilestones  = liveMilestones ?? mockMilestones;
+  const activeFinancials  = liveFinancials ?? mockPnlData;
+
+  // ── Gate: show login if not authenticated ────────────────────
+  if (!user) return <LoginPage onLogin={handleLogin} />;
 
   return (
     <div className="app-shell">
@@ -149,15 +249,26 @@ export default function App() {
           <div className="brand-mark">SC</div>
           <div>
             <p className="eyebrow">Cradle ecosystem command centre</p>
-            <h1>StarsConnector</h1>
+            <h1>StartConnector</h1>
           </div>
         </div>
 
-        <div className="top-metrics" aria-label="Demo metrics">
-          <MetricPill label="Applications" value="31" icon={ClipboardCheck} />
-          <MetricPill label="Mentors" value="50" icon={UsersRound} />
-          <MetricPill label="Active Projects" value="20" icon={Activity} />
+        <div className="top-metrics" aria-label="Live metrics">
+          <MetricPill label="Applications" value={stats?.total_applications ?? 31} icon={ClipboardCheck} />
+          <MetricPill label="Mentors"      value={stats?.total_mentors ?? 50}       icon={UsersRound} />
+          <MetricPill label="Active Projects" value={stats?.active_programmes ?? 20} icon={Activity} />
         </div>
+
+        <button
+          className="ghost-button"
+          onClick={handleLogout}
+          type="button"
+          title={`Signed in as ${user.name}`}
+          style={{ marginLeft: 'auto', flexShrink: 0 }}
+        >
+          <LogOut size={16} />
+          <span style={{ fontSize: '0.78rem' }}>{user.name}</span>
+        </button>
       </header>
 
       <nav className="tabbar" aria-label="Demo views">
@@ -191,6 +302,7 @@ export default function App() {
             expandedMentorId={expandedMentorId}
             mentorFlow={mentorFlow}
             assignedMentorId={assignedMentorId}
+            mentors={activeMentors}
             onApprove={approveApplication}
             onExpandMentor={setExpandedMentorId}
             onOpenBooking={openBooking}
@@ -200,11 +312,16 @@ export default function App() {
           />
         )}
 
-        {activeTab === 'ecosystem' && (
-          <EcosystemGraph />
-        )}
+        {activeTab === 'ecosystem' && <EcosystemGraph />}
 
-        {activeTab === 'monitoring' && <MonitoringView />}
+        {activeTab === 'monitoring' && (
+          <MonitoringView
+            loading={!monitoringReady}
+            milestones={activeMilestones}
+            pnlData={activeFinancials}
+            project={activeMonitoring}
+          />
+        )}
       </main>
 
       {aiStage === 'thinking' && <AiThinkingOverlay />}
@@ -233,6 +350,8 @@ export default function App() {
     </div>
   );
 }
+
+// ── Sub-components ────────────────────────────────────────────
 
 function MetricPill({ icon: Icon, label, value }) {
   return (
@@ -269,18 +388,15 @@ function ParticipantView({ applicationStatus, onOpenCradle, onSubmit, statusLabe
             <p className="eyebrow">Applicant dossier</p>
             <h3>{applicant.name}</h3>
           </div>
-          <div className="avatar-xl" aria-hidden="true">
-            AR
-          </div>
+          <div className="avatar-xl" aria-hidden="true">AR</div>
         </div>
-
         <div className="field-grid">
-          <InfoField label="Founder" value={applicant.role} />
-          <InfoField label="Programme" value={applicant.programme} />
-          <InfoField label="Sector" value={applicant.sector} />
-          <InfoField label="Stage" value={applicant.stage} />
-          <InfoField label="Funding request" value={applicant.requestedFunding} />
-          <InfoField label="Location" value={applicant.location} />
+          <InfoField label="Founder"          value={applicant.role} />
+          <InfoField label="Programme"        value={applicant.programme} />
+          <InfoField label="Sector"           value={applicant.sector} />
+          <InfoField label="Stage"            value={applicant.stage} />
+          <InfoField label="Funding request"  value={applicant.requestedFunding} />
+          <InfoField label="Location"         value={applicant.location} />
         </div>
       </article>
 
@@ -381,6 +497,7 @@ function CradleView({
   expandedMentorId,
   assignedMentorId,
   mentorFlow,
+  mentors,
   onApprove,
   onExpandMentor,
   onOpenBooking,
@@ -388,9 +505,9 @@ function CradleView({
   onStartReview,
 }) {
   const hasSubmission = applicationStatus !== 'draft';
-  const verdictReady = aiStage === 'verdict_ready' || applicationStatus === 'approved';
-  const approved = applicationStatus === 'approved';
-  const showMentors = mentorFlow === 'shortlist_visible' || mentorFlow === 'confirmed';
+  const verdictReady  = aiStage === 'verdict_ready' || applicationStatus === 'approved';
+  const approved      = applicationStatus === 'approved';
+  const showMentors   = mentorFlow === 'shortlist_visible' || mentorFlow === 'confirmed';
 
   return (
     <section className="scene-grid cradle-grid">
@@ -442,7 +559,7 @@ function CradleView({
               <BrainCircuit size={18} />
               <span>
                 {aiStage === 'thinking'
-                  ? 'AI Review Running'
+                  ? 'AI Review Running…'
                   : verdictReady
                     ? 'AI Review Complete'
                     : 'AI Review'}
@@ -507,6 +624,7 @@ function CradleView({
           assignedMentorId={assignedMentorId}
           confirmed={mentorFlow === 'confirmed'}
           expandedMentorId={expandedMentorId}
+          mentors={mentors}
           onExpandMentor={onExpandMentor}
           onOpenBooking={onOpenBooking}
         />
@@ -519,6 +637,7 @@ function MentorShortlist({
   assignedMentorId,
   confirmed,
   expandedMentorId,
+  mentors,
   onExpandMentor,
   onOpenBooking,
 }) {
@@ -527,7 +646,7 @@ function MentorShortlist({
       <div className="panel-heading">
         <div>
           <p className="eyebrow">AI mentor matching</p>
-          <h3>Top 3 out of 50 scanned profiles</h3>
+          <h3>Top {mentors.length} out of 50 scanned profiles</h3>
         </div>
         <Handshake className="panel-icon" size={22} />
       </div>
@@ -555,7 +674,7 @@ function MentorShortlist({
               </div>
 
               <div className="inline-tags">
-                {mentor.tags.map((tag) => (
+                {(mentor.tags ?? []).map((tag) => (
                   <span key={tag}>{tag}</span>
                 ))}
               </div>
@@ -572,10 +691,12 @@ function MentorShortlist({
 
               {expanded && (
                 <div className="mentor-details">
-                  <p>{mentor.bio}</p>
+                  <p>{mentor.bio || mentor.reason}</p>
                   <div className="detail-strip">
                     <span>{mentor.stat}</span>
-                    <span>{mentor.pastMatches.join(', ')}</span>
+                    {mentor.pastMatches?.length > 0 && (
+                      <span>{mentor.pastMatches.join(', ')}</span>
+                    )}
                     <span>{mentor.availability}</span>
                   </div>
                 </div>
@@ -624,9 +745,7 @@ function AiThinkingOverlay() {
         <div className="ai-step-list">
           {aiSteps.map((step, index) => (
             <div className="ai-step" key={step} style={{ animationDelay: `${index * 420}ms` }}>
-              <span>
-                <Check size={14} />
-              </span>
+              <span><Check size={14} /></span>
               <p>{step}</p>
             </div>
           ))}
@@ -642,7 +761,12 @@ function SessionBookingModal({ mentor, onClose, onConfirm, sessionDetails }) {
 
   return (
     <div className="modal-backdrop" role="presentation">
-      <section className="booking-modal" role="dialog" aria-modal="true" aria-labelledby="booking-title">
+      <section
+        className="booking-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="booking-title"
+      >
         <button className="close-button" aria-label="Close booking modal" onClick={onClose} type="button">
           <X size={18} />
         </button>
@@ -654,17 +778,16 @@ function SessionBookingModal({ mentor, onClose, onConfirm, sessionDetails }) {
           <CalendarDays className="panel-icon" size={22} />
         </div>
         <p className="body-copy">
-          The first mentor session is confirmed in-memory for the live demo. No calendar or backend
-          integration is required.
+          Book the first mentor session. The session is saved to the backend and confirmed in the UI.
         </p>
         <div className="booking-grid">
           <label>
             <span>Date</span>
-            <input type="date" value={date} onChange={(event) => setDate(event.target.value)} />
+            <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
           </label>
           <label>
             <span>Time</span>
-            <select value={time} onChange={(event) => setTime(event.target.value)}>
+            <select value={time} onChange={(e) => setTime(e.target.value)}>
               <option>10:30 AM</option>
               <option>2:00 PM</option>
               <option>4:30 PM</option>
@@ -673,9 +796,7 @@ function SessionBookingModal({ mentor, onClose, onConfirm, sessionDetails }) {
         </div>
         <div className="session-summary">
           <Handshake size={18} />
-          <span>
-            Ali Rahman + {mentor.name}, {date} at {time}
-          </span>
+          <span>Ali Rahman + {mentor.name}, {date} at {time}</span>
         </div>
         <div className="action-row">
           <button className="primary-button" onClick={() => onConfirm({ date, time })} type="button">
@@ -692,31 +813,41 @@ function SessionBookingModal({ mentor, onClose, onConfirm, sessionDetails }) {
   );
 }
 
-function MonitoringView() {
+function MonitoringView({ loading, milestones, pnlData, project }) {
+  if (loading) {
+    return (
+      <section className="scene-grid">
+        <div className="loading-state">
+          <BrainCircuit className="spin" size={32} />
+          <p>Loading monitoring data…</p>
+        </div>
+      </section>
+    );
+  }
   return (
     <section className="scene-grid monitoring-grid">
       <div className="scene-intro">
         <div>
           <p className="eyebrow">Project monitoring</p>
-          <h2>{monitoringProject.name} health view</h2>
+          <h2>{project.name} health view</h2>
         </div>
-        <StatusBadge status="on-track">{monitoringProject.status}</StatusBadge>
+        <StatusBadge status="on-track">{project.status}</StatusBadge>
       </div>
 
       <article className="panel project-panel">
         <div className="panel-heading">
           <div>
             <p className="eyebrow">Active project</p>
-            <h3>{monitoringProject.name}</h3>
+            <h3>{project.name}</h3>
           </div>
           <Activity className="panel-icon" size={22} />
         </div>
         <div className="monitoring-stats">
-          <InfoField label="Founder" value={monitoringProject.owner} />
-          <InfoField label="Assigned mentor" value={monitoringProject.mentor} />
-          <InfoField label="Runway" value={monitoringProject.runway} />
-          <InfoField label="Burn" value={monitoringProject.burn} />
-          <InfoField label="Next review" value={monitoringProject.nextReview} />
+          <InfoField label="Founder"          value={project.owner} />
+          <InfoField label="Assigned mentor"  value={project.mentor} />
+          <InfoField label="Runway"           value={project.runway} />
+          <InfoField label="Burn"             value={project.burn} />
+          <InfoField label="Next review"      value={project.nextReview} />
         </div>
       </article>
 
@@ -724,15 +855,15 @@ function MonitoringView() {
         <div className="panel-heading">
           <div>
             <p className="eyebrow">Milestone tracker</p>
-            <h3>Current position: Market Validation Done</h3>
+            <h3>Progress overview</h3>
           </div>
           <Target className="panel-icon" size={22} />
         </div>
         <div className="milestone-track">
           {milestones.map((milestone, index) => {
-            const current = index === monitoringProject.currentMilestone;
-            const complete = index < monitoringProject.currentMilestone;
-            const nextComplete = index + 1 <= monitoringProject.currentMilestone;
+            const current     = index === project.currentMilestone;
+            const complete    = index < project.currentMilestone;
+            const nextComplete = index + 1 <= project.currentMilestone;
             return (
               <div className="milestone-item" key={milestone.label}>
                 {index < milestones.length - 1 && (
@@ -774,8 +905,8 @@ function MonitoringView() {
               />
               <Tooltip content={<PnlTooltip />} cursor={{ fill: 'rgba(46, 231, 209, 0.08)' }} />
               <Legend iconType="circle" wrapperStyle={{ color: '#cfe1e4' }} />
-              <Bar dataKey="revenue" name="Revenue" fill="#2ee7d1" radius={[6, 6, 0, 0]} />
-              <Bar dataKey="profit" name="Net profit" fill="#ffbf47" radius={[6, 6, 0, 0]} />
+              <Bar dataKey="revenue" name="Revenue"    fill="#2ee7d1" radius={[6, 6, 0, 0]} />
+              <Bar dataKey="profit"  name="Net profit" fill="#ffbf47" radius={[6, 6, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -790,7 +921,7 @@ function MonitoringView() {
           <CheckCircle2 className="panel-icon" size={22} />
         </div>
         <div className="signal-list">
-          {monitoringProject.highlights.map((highlight, index) => (
+          {project.highlights.map((highlight, index) => (
             <div className="signal-row" key={highlight}>
               <span>{String(index + 1).padStart(2, '0')}</span>
               <p>{highlight}</p>
@@ -803,10 +934,7 @@ function MonitoringView() {
 }
 
 function PnlTooltip({ active, payload, label }) {
-  if (!active || !payload?.length) {
-    return null;
-  }
-
+  if (!active || !payload?.length) return null;
   return (
     <div className="chart-tooltip">
       <strong>{label}</strong>
