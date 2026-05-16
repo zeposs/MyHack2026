@@ -829,6 +829,325 @@
 
   /* ─── MISC ─── */
   .prog-item-last { border-bottom: none; }
+
+  /* ─── MENTOR TABS ─── */
+  .mentor-tab-bar {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+  }
+  .mentor-tab {
+    padding: 12px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: var(--warm-gray);
+    border-bottom: 2px solid transparent;
+    font-family: inherit;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+  .mentor-tab:hover { color: var(--ink); }
+  .mentor-tab.active { color: var(--teal); border-bottom-color: var(--teal); }
+  .invite-badge {
+    background: var(--accent);
+    color: white;
+    border-radius: 10px;
+    font-size: 10px;
+    padding: 1px 6px;
+    font-weight: 600;
+    min-width: 16px;
+    text-align: center;
+  }
+
+  /* ─── APPROVE / REJECT BUTTONS ─── */
+  .btn-approve { background: var(--green); color: white; }
+  .btn-approve:hover { background: #2d7048; }
+  .btn-reject { color: var(--red-soft); border-color: var(--red-soft); }
+  .btn-reject:hover { background: var(--red-light); }
+  .match-action-row { display: flex; gap: 8px; margin-top: 12px; }
+
+  /* ─── NEW PROGRAMME MODAL ─── */
+  dialog.modal-box {
+    border: none;
+    border-radius: 16px;
+    padding: 0;
+    width: 500px;
+    max-width: calc(100vw - 32px);
+    box-shadow: var(--shadow-lg);
+    background: var(--surface);
+  }
+  dialog.modal-box::backdrop {
+    background: rgba(26,23,20,0.5);
+  }
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .modal-body { padding: 20px 24px; }
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 16px 24px;
+    border-top: 1px solid var(--border);
+  }
+  .modal-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--warm-gray);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+  .suggestion-box {
+    margin-top: 16px;
+    background: var(--teal-light);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .suggestion-card {
+    background: white;
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-top: 8px;
+  }
+  .modal-date-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 4px; }
+  .modal-input-full { width: 100%; }
+  .modal-input-spaced { width: 100%; margin-bottom: 16px; }
+  .modal-avatar-sm { width: 36px; height: 36px; font-size: 12px; }
+  .modal-mentor-name { font-size: 13px; font-weight: 600; }
+  .modal-mentor-meta { font-size: 11px; color: var(--warm-gray); }
+  .modal-score-teal { font-size: 18px; color: var(--teal); }
+  .modal-suggestion-note { font-size: 11px; color: var(--warm-gray); margin: 6px 0 8px; line-height: 1.5; }
+  .label-teal { color: var(--teal); }
+
+  /* ─── BOOKING WIZARD ─── */
+  .bk-prog-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .bk-prog-card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+    background: var(--surface);
+  }
+  .bk-prog-card:hover { border-color: var(--teal); background: var(--teal-light); }
+  .bk-prog-card.bk-selected { border: 2px solid var(--teal); background: var(--teal-light); }
+  .bk-prog-name { font-size: 13px; font-weight: 600; }
+  .bk-prog-meta { font-size: 11px; color: var(--warm-gray); margin-top: 2px; }
+  .bk-prog-badge {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    background: var(--teal-light);
+    color: var(--teal);
+    font-weight: 600;
+  }
+  .bk-time-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .bk-slot {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    background: var(--surface);
+  }
+  .bk-slot:hover:not(.bk-full) { border-color: var(--teal); background: var(--teal-light); }
+  .bk-slot.bk-selected { border: 2px solid var(--teal); background: var(--teal-light); }
+  .bk-slot.bk-full { opacity: 0.4; cursor: not-allowed; }
+  .bk-slot-time { font-size: 13px; font-weight: 600; }
+  .bk-slot-date { font-size: 11px; color: var(--warm-gray); margin-top: 2px; }
+  .bk-slot-avail { font-size: 10px; margin-top: 4px; color: var(--teal); font-weight: 500; }
+  .bk-slot.bk-full .bk-slot-avail { color: var(--warm-gray); }
+  .bk-textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 13px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    resize: none;
+    min-height: 88px;
+    color: var(--ink);
+    background: var(--surface);
+    transition: border-color 0.15s;
+    outline: none;
+  }
+  .bk-textarea:focus { border-color: var(--teal); }
+  .bk-quick-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .bk-qtag {
+    font-size: 11px;
+    padding: 4px 10px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    cursor: pointer;
+    color: var(--warm-gray);
+    background: var(--cream);
+    transition: all 0.15s;
+  }
+  .bk-qtag:hover { border-color: var(--teal); color: var(--teal); }
+  .bk-char { font-size: 11px; color: var(--warm-gray); text-align: right; margin-top: 4px; }
+  .bk-btn-row { display: flex; gap: 8px; justify-content: flex-end; margin-top: 18px; }
+  .bk-back {
+    padding: 9px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    color: var(--warm-gray);
+    transition: all 0.15s;
+  }
+  .bk-back:hover { background: var(--cream); }
+  .bk-next {
+    padding: 9px 20px;
+    border: none;
+    border-radius: 8px;
+    background: var(--teal);
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .bk-next:hover { background: #226661; }
+  .bk-next:disabled { opacity: 0.4; cursor: not-allowed; }
+  .bk-scan-wrap { text-align: center; padding: 24px 16px; }
+  .bk-ring {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    border: 2px solid var(--teal-light);
+    border-top-color: var(--teal);
+    margin: 0 auto 16px;
+    animation: bk-spin 0.9s linear infinite;
+  }
+  @keyframes bk-spin { to { transform: rotate(360deg); } }
+  .bk-scan-label { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .bk-scan-sub { font-size: 12px; color: var(--warm-gray); }
+  .bk-scan-steps { display: flex; flex-direction: column; gap: 6px; margin: 16px auto 0; max-width: 260px; text-align: left; }
+  .bk-scan-step { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--warm-gray); transition: color 0.3s; }
+  .bk-scan-step.bk-done { color: var(--teal); font-weight: 500; }
+  .bk-best-badge {
+    display: inline-block;
+    font-size: 10px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: var(--teal);
+    color: white;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .bk-match-top {
+    border: 2px solid var(--teal);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    background: var(--surface);
+  }
+  .bk-match-other-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .bk-match-other {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    background: var(--surface);
+  }
+  .bk-match-other:hover { border-color: var(--teal); }
+  .bk-match-other.bk-selected { border: 2px solid var(--teal); background: var(--teal-light); }
+  .bk-match-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .bk-match-av {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 600;
+    color: white; flex-shrink: 0;
+  }
+  .bk-match-name { font-size: 13px; font-weight: 600; }
+  .bk-match-role { font-size: 11px; color: var(--warm-gray); margin-top: 1px; }
+  .bk-match-score { margin-left: auto; text-align: right; }
+  .bk-score-num { font-size: 20px; font-weight: 700; color: var(--teal); line-height: 1; }
+  .bk-score-lbl { font-size: 10px; color: var(--warm-gray); }
+  .bk-match-reason {
+    font-size: 12px; color: var(--warm-gray);
+    line-height: 1.6;
+    background: var(--cream);
+    padding: 10px 12px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  .bk-match-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+  .bk-mtag {
+    font-size: 10px; padding: 3px 8px;
+    border-radius: 20px;
+    background: var(--teal-light);
+    color: var(--teal);
+    font-weight: 500;
+  }
+  .bk-confirm-box {
+    background: var(--cream);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 13px;
+    margin-bottom: 14px;
+  }
+  .bk-confirm-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .bk-confirm-row:last-child { border-bottom: none; }
+  .bk-confirm-key { color: var(--warm-gray); font-size: 12px; }
+  .bk-confirm-val { font-weight: 600; font-size: 12px; }
+  .bk-intent-preview {
+    background: var(--cream);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 12px;
+    color: var(--warm-gray);
+    line-height: 1.6;
+  }
+  .bk-success { text-align: center; padding: 20px 12px 8px; }
+  .bk-success-icon {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: var(--teal-light);
+    color: var(--teal);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    margin: 0 auto 14px;
+  }
+  .bk-success-title { font-family: 'DM Serif Display', serif; font-size: 20px; }
+  .bk-success-sub { font-size: 13px; color: var(--warm-gray); margin-top: 6px; line-height: 1.6; }
+  #bk-dots .bkdot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--border);
+    transition: all 0.25s;
+    display: inline-block;
+  }
+  #bk-dots .bkdot.done { background: var(--teal); }
+  #bk-dots .bkdot.active { background: var(--teal); width: 20px; border-radius: 4px; }
 </style>
 </head>
 <body>
@@ -840,9 +1159,9 @@
     StartConnector
   </div>
   <div class="view-switcher">
-    <button class="view-btn active" onclick="switchView('program-owner')">Program Owner</button>
-    <button class="view-btn" onclick="switchView('mentor')">Mentor</button>
-    <button class="view-btn" onclick="switchView('participant')">Participant</button>
+    <button class="view-btn active" onclick="switchView('program-owner', this)">Program Owner</button>
+    <button class="view-btn" onclick="switchView('mentor', this)">Mentor</button>
+    <button class="view-btn" onclick="switchView('participant', this)">Participant</button>
   </div>
   <div class="nav-avatar">JL</div>
 </nav>
@@ -975,22 +1294,22 @@
             <div class="timeline-track">
               <div class="timeline-line">
                 <div class="timeline-fill"></div>
-                <div class="timeline-node start" title="Aug 11"></div>
+                <div class="timeline-node start" title="Mar 1"></div>
                 <div class="timeline-node current" title="Today"></div>
-                <div class="timeline-node end" title="Nov 30"></div>
+                <div class="timeline-node end" title="Jun 30"></div>
               </div>
             </div>
             <div class="timeline-labels">
-              <span>Aug 11</span>
+              <span>Mar 1</span>
               <span>Today</span>
-              <span>Nov 30</span>
+              <span>Jun 30</span>
             </div>
 
             <div style="margin-top:20px">
               <div class="essential-info">
-                <strong style="color:var(--ink);font-size:12px">Essential Info</strong><br>
-                48 participants enrolled · 12 active mentors<br>
-                137 sessions completed · Avg. rating 4.7
+                <strong style="color:var(--ink);font-size:12px">Cohort Info</strong><br>
+                3 startups enrolled · 5 active mentors<br>
+                8 sessions completed · Avg. match score 87%
                 <div class="info-ongoing"><div class="green-dot"></div> Programme ongoing</div>
               </div>
             </div>
@@ -999,16 +1318,16 @@
               <div style="font-size:12px;font-weight:600;color:var(--warm-gray);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">Upcoming Sessions</div>
               <div class="sessions-list">
                 <div class="session-row">
-                  <div class="session-name"><div class="session-status"></div>1:1 with Sara P. & Lena W.</div>
-                  <div class="session-date">Sep 10</div>
+                  <div class="session-name"><div class="session-status"></div>Ahmad × PayFast — Payments Arch Review</div>
+                  <div class="session-date">May 20</div>
                 </div>
                 <div class="session-row">
-                  <div class="session-name"><div class="session-status" style="background:var(--amber)"></div>Group: Leadership Workshop</div>
-                  <div class="session-date">Sep 14</div>
+                  <div class="session-name"><div class="session-status" style="background:var(--amber)"></div>Sarah × LoanEase — Growth Strategy</div>
+                  <div class="session-date">May 22</div>
                 </div>
                 <div class="session-row">
-                  <div class="session-name"><div class="session-status" style="background:var(--teal)"></div>Check-in: James K. & cohort</div>
-                  <div class="session-date">Sep 18</div>
+                  <div class="session-name"><div class="session-status" style="background:var(--teal)"></div>Cohort Mid-programme Check-in</div>
+                  <div class="session-date">May 28</div>
                 </div>
               </div>
             </div>
@@ -1025,82 +1344,29 @@
             <span style="font-size:11px;background:var(--green-light);color:var(--green);padding:3px 8px;border-radius:20px;font-weight:600">Online</span>
           </div>
           <div class="chat-messages">
-            <div class="chat-bubble bot">Hi! I'm your program assistant. How can I help today?</div>
-            <div class="chat-bubble user">Show me participants who haven't booked a session yet.</div>
-            <div class="chat-bubble bot">Found 7 participants with no sessions in the last 3 weeks. Want me to send them a reminder?</div>
+            <div class="chat-bubble bot">Hi! I monitor your ecosystem health. David / TrackIt hasn't had activity in 15 days — want me to draft a check-in message?</div>
+            <div class="chat-bubble user">Yes — and flag any other relationships at risk.</div>
+            <div class="chat-bubble bot">Flagged 1 relationship (David × TrackIt, 15 days). Ahmad × PayFast and Sarah × LoanEase look healthy. Drafting check-in now…</div>
           </div>
           <div class="chat-input-row">
-            <input class="chat-input" placeholder="Ask anything about your program…">
-            <button class="btn btn-teal" style="padding:8px 14px;">→</button>
+            <input class="chat-input" placeholder="Ask about your ecosystem health…">
+            <button type="button" class="btn btn-teal" style="padding:8px 14px;">→</button>
           </div>
         </div>
 
       </div>
 
-      <!-- Tickets -->
-      <div class="card" style="grid-column:1/-1">
+      <!-- AI Match Results Panel (hidden until Find Mentors is clicked) -->
+      <div id="ai-match-panel" class="card card-full-width" style="display:none">
         <div class="card-header">
           <div class="card-title">
-            <div class="card-icon amber">🎟</div>
-            Support Tickets
+            <div class="card-icon teal">✦</div>
+            AI Mentor Matches
+            <span id="ai-match-query-label" style="font-weight:400;color:var(--warm-gray);font-size:13px;max-width:360px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
           </div>
-          <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px;">View All</button>
+          <button type="button" class="btn btn-ghost btn-sm" onclick="closeAIMatchPanel()">✕ Close</button>
         </div>
-        <div class="ticket-filters">
-          <button class="filter-chip active">All</button>
-          <button class="filter-chip">Urgent</button>
-          <button class="filter-chip">In Progress</button>
-          <button class="filter-chip">Completed</button>
-          <button class="filter-chip">Pending</button>
-        </div>
-        <table class="ticket-table">
-          <thead>
-            <tr>
-              <th>Ticket ID</th>
-              <th>Subject</th>
-              <th>Raised by</th>
-              <th>Status</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="ticket-id">#TK-0041</td>
-              <td>Session not showing in calendar</td>
-              <td>Lena Williams</td>
-              <td><span class="badge urgent">Urgent</span></td>
-              <td>Aug 10, 2024</td>
-            </tr>
-            <tr>
-              <td class="ticket-id">#TK-0040</td>
-              <td>Unable to upload feedback doc</td>
-              <td>Marcus Bell</td>
-              <td><span class="badge completed">Completed</span></td>
-              <td>Aug 10, 2024</td>
-            </tr>
-            <tr>
-              <td class="ticket-id">#TK-0039</td>
-              <td>Program dates need updating</td>
-              <td>Priya Mehta</td>
-              <td><span class="badge in-progress">In Progress</span></td>
-              <td>Aug 9, 2024</td>
-            </tr>
-            <tr>
-              <td class="ticket-id">#TK-0038</td>
-              <td>Mentor pairing request</td>
-              <td>Tom Andrews</td>
-              <td><span class="badge pending">Pending</span></td>
-              <td>Aug 8, 2024</td>
-            </tr>
-            <tr>
-              <td class="ticket-id">#TK-0037</td>
-              <td>Missing session notes from Aug 6</td>
-              <td>Aisha Okonkwo</td>
-              <td><span class="badge urgent">Urgent</span></td>
-              <td>Aug 7, 2024</td>
-            </tr>
-          </tbody>
-        </table>
+        <div id="ai-match-content" style="padding:24px 20px"></div>
       </div>
 
       <!-- Relationship Health -->
@@ -1427,260 +1693,303 @@
 
   </div>
 </div>
-  .bk-prog-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .bk-prog-card {
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px 14px;
-    cursor: pointer;
-    transition: all 0.15s;
-    background: var(--surface);
-  }
-  .bk-prog-card:hover { border-color: var(--teal); background: var(--teal-light); }
-  .bk-prog-card.bk-selected { border: 2px solid var(--teal); background: var(--teal-light); }
-  .bk-prog-name { font-size: 13px; font-weight: 600; }
-  .bk-prog-meta { font-size: 11px; color: var(--warm-gray); margin-top: 2px; }
-  .bk-prog-badge {
-    display: inline-block;
-    margin-top: 6px;
-    font-size: 10px;
-    padding: 2px 8px;
-    border-radius: 20px;
-    background: var(--teal-light);
-    color: var(--teal);
-    font-weight: 600;
-  }
-  .bk-time-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-  .bk-slot {
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 10px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.15s;
-    background: var(--surface);
-  }
-  .bk-slot:hover:not(.bk-full) { border-color: var(--teal); background: var(--teal-light); }
-  .bk-slot.bk-selected { border: 2px solid var(--teal); background: var(--teal-light); }
-  .bk-slot.bk-full { opacity: 0.4; cursor: not-allowed; }
-  .bk-slot-time { font-size: 13px; font-weight: 600; }
-  .bk-slot-date { font-size: 11px; color: var(--warm-gray); margin-top: 2px; }
-  .bk-slot-avail { font-size: 10px; margin-top: 4px; color: var(--teal); font-weight: 500; }
-  .bk-slot.bk-full .bk-slot-avail { color: var(--warm-gray); }
-  .bk-textarea {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 10px 13px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    resize: none;
-    min-height: 88px;
-    color: var(--ink);
-    background: var(--surface);
-    transition: border-color 0.15s;
-    outline: none;
-  }
-  .bk-textarea:focus { border-color: var(--teal); }
-  .bk-quick-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
-  .bk-qtag {
-    font-size: 11px;
-    padding: 4px 10px;
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    cursor: pointer;
-    color: var(--warm-gray);
-    background: var(--cream);
-    transition: all 0.15s;
-  }
-  .bk-qtag:hover { border-color: var(--teal); color: var(--teal); }
-  .bk-char { font-size: 11px; color: var(--warm-gray); text-align: right; margin-top: 4px; }
-  .bk-btn-row { display: flex; gap: 8px; justify-content: flex-end; margin-top: 18px; }
-  .bk-back {
-    padding: 9px 16px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: transparent;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    cursor: pointer;
-    color: var(--warm-gray);
-    transition: all 0.15s;
-  }
-  .bk-back:hover { background: var(--cream); }
-  .bk-next {
-    padding: 9px 20px;
-    border: none;
-    border-radius: 8px;
-    background: var(--teal);
-    color: white;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.15s;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .bk-next:hover { background: #226661; }
-  .bk-next:disabled { opacity: 0.4; cursor: not-allowed; }
-  .bk-scan-wrap { text-align: center; padding: 24px 16px; }
-  .bk-ring {
-    width: 52px; height: 52px;
-    border-radius: 50%;
-    border: 2px solid var(--teal-light);
-    border-top-color: var(--teal);
-    margin: 0 auto 16px;
-    animation: bk-spin 0.9s linear infinite;
-  }
-  @keyframes bk-spin { to { transform: rotate(360deg); } }
-  .bk-scan-label { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
-  .bk-scan-sub { font-size: 12px; color: var(--warm-gray); }
-  .bk-scan-steps { display: flex; flex-direction: column; gap: 6px; margin: 16px auto 0; max-width: 260px; text-align: left; }
-  .bk-scan-step { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--warm-gray); transition: color 0.3s; }
-  .bk-scan-step.bk-done { color: var(--teal); font-weight: 500; }
-  .bk-best-badge {
-    display: inline-block;
-    font-size: 10px;
-    padding: 3px 10px;
-    border-radius: 20px;
-    background: var(--teal);
-    color: white;
-    font-weight: 600;
-    margin-bottom: 8px;
-  }
-  .bk-match-top {
-    border: 2px solid var(--teal);
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 12px;
-    background: var(--surface);
-  }
-  .bk-match-other-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .bk-match-other {
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px;
-    cursor: pointer;
-    transition: all 0.15s;
-    background: var(--surface);
-  }
-  .bk-match-other:hover { border-color: var(--teal); }
-  .bk-match-other.bk-selected { border: 2px solid var(--teal); background: var(--teal-light); }
-  .bk-match-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-  .bk-match-av {
-    width: 40px; height: 40px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 600;
-    color: white; flex-shrink: 0;
-  }
-  .bk-match-name { font-size: 13px; font-weight: 600; }
-  .bk-match-role { font-size: 11px; color: var(--warm-gray); margin-top: 1px; }
-  .bk-match-score { margin-left: auto; text-align: right; }
-  .bk-score-num { font-size: 20px; font-weight: 700; color: var(--teal); line-height: 1; }
-  .bk-score-lbl { font-size: 10px; color: var(--warm-gray); }
-  .bk-match-reason {
-    font-size: 12px; color: var(--warm-gray);
-    line-height: 1.6;
-    background: var(--cream);
-    padding: 10px 12px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-  }
-  .bk-match-tags { display: flex; flex-wrap: wrap; gap: 5px; }
-  .bk-mtag {
-    font-size: 10px; padding: 3px 8px;
-    border-radius: 20px;
-    background: var(--teal-light);
-    color: var(--teal);
-    font-weight: 500;
-  }
-  .bk-confirm-box {
-    background: var(--cream);
-    border-radius: 10px;
-    padding: 14px 16px;
-    font-size: 13px;
-    margin-bottom: 14px;
-  }
-  .bk-confirm-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 5px 0;
-    border-bottom: 1px solid var(--border);
-  }
-  .bk-confirm-row:last-child { border-bottom: none; }
-  .bk-confirm-key { color: var(--warm-gray); font-size: 12px; }
-  .bk-confirm-val { font-weight: 600; font-size: 12px; }
-  .bk-intent-preview {
-    background: var(--cream);
-    border-radius: 8px;
-    padding: 10px 12px;
-    font-size: 12px;
-    color: var(--warm-gray);
-    line-height: 1.6;
-  }
-  .bk-success { text-align: center; padding: 20px 12px 8px; }
-  .bk-success-icon {
-    width: 52px; height: 52px;
-    border-radius: 50%;
-    background: var(--teal-light);
-    color: var(--teal);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px;
-    margin: 0 auto 14px;
-  }
-  .bk-success-title { font-family: 'DM Serif Display', serif; font-size: 20px; }
-  .bk-success-sub { font-size: 13px; color: var(--warm-gray); margin-top: 6px; line-height: 1.6; }
-  #bk-dots .bkdot {
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    background: var(--border);
-    transition: all 0.25s;
-    display: inline-block;
-  }
-  #bk-dots .bkdot.done { background: var(--teal); }
-  #bk-dots .bkdot.active { background: var(--teal); width: 20px; border-radius: 4px; }
-</style>
+
+<!-- ════════════════════════════════════════════
+     NEW PROGRAMME MODAL
+════════════════════════════════════════════ -->
+<dialog id="new-prog-modal" class="modal-box" aria-labelledby="np-modal-title">
+  <div class="modal-header">
+    <div class="card-title" id="np-modal-title">
+      <div class="card-icon accent">📋</div>
+      Start New Programme
+    </div>
+    <button type="button" class="btn btn-ghost btn-xs" onclick="closeNewProgramme()">✕</button>
+  </div>
+  <div class="modal-body">
+    <label class="modal-label" for="np-name">Programme Name</label>
+    <input type="text" id="np-name" class="date-input modal-input-spaced" placeholder="e.g. Google for Startups — AI Batch 5">
+    <div class="modal-date-grid">
+      <div>
+        <label class="modal-label" for="np-start">Start Date</label>
+        <input type="date" id="np-start" class="date-input modal-input-full">
+      </div>
+      <div>
+        <label class="modal-label" for="np-end">End Date</label>
+        <input type="date" id="np-end" class="date-input modal-input-full">
+      </div>
+    </div>
+    <div class="suggestion-box">
+      <div class="sidebar-label label-teal">✦ Reuse suggestion from past cohort</div>
+      <div class="suggestion-card">
+        <div class="bk-match-header">
+          <div class="bk-match-av av-teal modal-avatar-sm">AR</div>
+          <div>
+            <div class="modal-mentor-name">Ahmad Razif</div>
+            <div class="modal-mentor-meta">Scored 4.8/5 with CashFlow · Batch 4</div>
+          </div>
+          <div class="bk-match-score">
+            <div class="bk-score-num modal-score-teal">4.8</div>
+            <div class="bk-score-lbl">/ 5</div>
+          </div>
+        </div>
+        <div class="modal-suggestion-note">"Ahmad scored 4.8/5 with a similar fintech startup — worth reusing for your next cohort?"</div>
+        <button type="button" class="btn btn-teal btn-xs">+ Add Ahmad to this programme</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-ghost" onclick="closeNewProgramme()">Cancel</button>
+    <button type="button" class="btn btn-primary" onclick="submitNewProgramme()">Create Programme</button>
+  </div>
+</dialog>
 
 <script>
   /* ── API ── */
   const API_BASE = 'http://localhost:8000';
 
-  /* ── AI Match ── */
-  async function runAIMatch() {
-    const query = document.getElementById('ai-query-input').value.trim();
-    if (!query) return;
-    // Switch to Participant view booking wizard at scanning step — wired to backend in Phase 3
-    switchView('participant');
-    document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.view-btn')[2].classList.add('active');
-    bkSel.intent = query;
-    bkStep = BK_STEPS.indexOf('scanning');
-    bkRender();
-  }
+  /* ── Shared state ── */
+  let currentMatchQuery = '';
+  const pendingRequests = [];
 
-  function openNewProgramme() {
-    alert('New Programme — backend integration coming in Phase 3');
-  }
-
-  /* ── Global UI bindings ── */
-  function switchView(view) {
+  /* ── View switching ── */
+  function switchView(view, btn) {
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('view-' + view).classList.add('active');
-    event.target.classList.add('active');
+    if (btn) btn.classList.add('active');
   }
 
-  document.querySelectorAll('.filter-chip').forEach(chip => {
-    chip.addEventListener('click', () => {
-      chip.closest('.ticket-filters').querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-      chip.classList.add('active');
-    });
-  });
+  /* ── Mentor tab switching ── */
+  function switchMentorTab(tab, btn) {
+    document.querySelectorAll('.mentor-tab-panel').forEach(p => { p.style.display = 'none'; });
+    document.querySelectorAll('.mentor-tab').forEach(b => b.classList.remove('active'));
+    document.getElementById('mtab-' + tab).style.display = '';
+    btn.classList.add('active');
+  }
 
+  /* ── AI Match (Program Owner view) ── */
+  function runAIMatch() {
+    const query = document.getElementById('ai-query-input').value.trim();
+    if (!query) return;
+    currentMatchQuery = query;
+
+    const panel = document.getElementById('ai-match-panel');
+    const label = document.getElementById('ai-match-query-label');
+    const preview = query.length > 60 ? query.slice(0, 60) + '…' : query;
+    label.textContent = '— "' + preview + '"';
+    panel.style.display = '';
+    panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    renderAIScanning();
+  }
+
+  function renderAIScanning() {
+    const el = document.getElementById('ai-match-content');
+    el.innerHTML = `
+      <div class="bk-scan-wrap">
+        <div class="bk-ring" id="ai-ring"></div>
+        <div class="bk-scan-label" id="ai-scan-lbl">Analysing your request…</div>
+        <div class="bk-scan-sub">Gemini is scanning mentor profiles and past outcomes</div>
+        <div class="bk-scan-steps">
+          <div class="bk-scan-step" id="aiss1">◎ Reading your query</div>
+          <div class="bk-scan-step" id="aiss2">◎ Scanning mentor profiles</div>
+          <div class="bk-scan-step" id="aiss3">◎ Analysing past outcomes</div>
+          <div class="bk-scan-step" id="aiss4">◎ Ranking top matches</div>
+        </div>
+      </div>`;
+
+    const steps  = ['aiss1', 'aiss2', 'aiss3', 'aiss4'];
+    const labels = ['Reading your query…', 'Scanning mentor profiles…', 'Analysing past outcomes…', 'Finalising rankings…'];
+    steps.forEach((id, i) => {
+      setTimeout(() => {
+        const s = document.getElementById(id);
+        if (s) { s.classList.add('bk-done'); s.textContent = '✓ ' + s.textContent.slice(2); }
+        const lbl = document.getElementById('ai-scan-lbl');
+        if (lbl) lbl.textContent = labels[i];
+      }, i * 750);
+    });
+    setTimeout(renderAIMatchCards, steps.length * 750 + 400);
+  }
+
+  function renderAIMatchCards() {
+    const el     = document.getElementById('ai-match-content');
+    const top    = bkMentors[0];
+    const others = bkMentors.slice(1);
+
+    el.innerHTML = `
+      <div style="padding-bottom:4px">
+        <div class="bk-best-badge">✦ Best match — ranked by Gemini</div>
+        <div class="bk-match-top" id="mc-${top.initials}">
+          <div class="bk-match-header">
+            <div class="bk-match-av" style="background:${top.bg}">${top.initials}</div>
+            <div>
+              <div class="bk-match-name">${top.name}</div>
+              <div class="bk-match-role">${top.role}</div>
+            </div>
+            <div class="bk-match-score">
+              <div class="bk-score-num">${top.score}%</div>
+              <div class="bk-score-lbl">match</div>
+            </div>
+          </div>
+          <div class="bk-match-reason">${top.reason}</div>
+          <div class="bk-match-evidence">📊 ${top.evidence}</div>
+          <div class="bk-match-tags" style="margin-bottom:4px">${top.tags.map(t => `<span class="bk-mtag">${t}</span>`).join('')}</div>
+          <div class="match-action-row">
+            <button type="button" class="btn btn-approve btn-sm" onclick="approveMatch('${top.initials}','${top.name}',${top.score})">✓ Approve</button>
+            <button type="button" class="btn btn-reject btn-sm btn-ghost" onclick="rejectMatch('${top.initials}')">✕ Reject</button>
+          </div>
+        </div>
+
+        <p style="font-size:11px;color:var(--warm-gray);margin:12px 0 8px">Other suggestions</p>
+        <div class="bk-match-other-grid">
+          ${others.map(m => `
+            <div class="bk-match-other" id="mc-${m.initials}">
+              <div class="bk-match-header" style="margin-bottom:6px">
+                <div class="bk-match-av" style="background:${m.bg};width:32px;height:32px;font-size:11px">${m.initials}</div>
+                <div>
+                  <div class="bk-match-name" style="font-size:12px">${m.name}</div>
+                  <div class="bk-match-role">${m.score}% match</div>
+                </div>
+              </div>
+              <div class="bk-match-evidence" style="font-size:10px;margin-bottom:6px">📊 ${m.evidence}</div>
+              <div class="bk-match-tags" style="margin-bottom:8px">${m.tags.map(t => `<span class="bk-mtag">${t}</span>`).join('')}</div>
+              <div class="match-action-row">
+                <button type="button" class="btn btn-approve btn-xs" onclick="approveMatch('${m.initials}','${m.name}',${m.score})">✓ Approve</button>
+                <button type="button" class="btn btn-reject btn-xs btn-ghost" onclick="rejectMatch('${m.initials}')">✕ Reject</button>
+              </div>
+            </div>`).join('')}
+        </div>
+      </div>`;
+  }
+
+  function approveMatch(initials, name, score) {
+    const card = document.getElementById('mc-' + initials);
+    if (!card) return;
+    const actionRow = card.querySelector('.match-action-row');
+    if (actionRow) actionRow.innerHTML = '<span class="badge completed" style="font-size:12px;padding:5px 12px">✓ Approved</span>';
+    card.style.borderColor = 'var(--green)';
+    card.style.background  = 'var(--green-light)';
+
+    const startup = extractStartupFromQuery(currentMatchQuery) || 'PayFast';
+    const tbody = document.querySelector('#relationships-table tbody');
+    if (tbody) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><strong>${name}</strong></td>
+        <td>${startup}</td>
+        <td>GfS — Fintech Cohort</td>
+        <td><span class="badge completed">${score}%</span></td>
+        <td><span class="badge in-progress">Matched</span></td>
+        <td>Just now</td>
+        <td><button type="button" class="btn btn-ghost btn-xs">View</button></td>`;
+      tbody.prepend(tr);
+    }
+    // Phase 3: POST /api/relationships, then PATCH /api/relationships/{id} { status: "active" }
+  }
+
+  function rejectMatch(initials) {
+    const card = document.getElementById('mc-' + initials);
+    if (!card) return;
+    const actionRow = card.querySelector('.match-action-row');
+    if (actionRow) actionRow.innerHTML = '<span class="badge urgent" style="font-size:12px;padding:5px 12px">✕ Rejected</span>';
+    card.style.opacity = '0.5';
+    // Phase 3: PATCH /api/relationships/{id} { status: "rejected" }
+  }
+
+  function closeAIMatchPanel() {
+    document.getElementById('ai-match-panel').style.display = 'none';
+  }
+
+  function extractStartupFromQuery(query) {
+    const known = ['PayFast', 'LoanEase', 'TrackIt'];
+    return known.find(s => query.toLowerCase().includes(s.toLowerCase())) || null;
+  }
+
+  /* ── New Programme Modal ── */
+  function openNewProgramme() {
+    document.getElementById('new-prog-modal').showModal();
+  }
+
+  function closeNewProgramme() {
+    document.getElementById('new-prog-modal').close();
+  }
+
+  function submitNewProgramme() {
+    const name = document.getElementById('np-name').value.trim();
+    if (!name) { document.getElementById('np-name').focus(); return; }
+    const list = document.getElementById('programme-list');
+    const item = document.createElement('div');
+    item.className = 'program-item';
+    item.innerHTML = `<span class="program-item-name">${name}</span><span class="program-item-count">0</span>`;
+    item.addEventListener('click', () => {
+      document.querySelectorAll('.program-item').forEach(i => i.classList.remove('active-prog'));
+      item.classList.add('active-prog');
+    });
+    list.appendChild(item);
+    document.getElementById('np-name').value = '';
+    closeNewProgramme();
+    // Phase 3: POST /api/programmes
+  }
+
+  /* ── Mentor invites & participant requests ── */
+  function refreshMentorInvites() {
+    const list    = document.getElementById('mentor-invites-list');
+    const countEl = document.getElementById('invite-count');
+    if (!list) return;
+    const mine = pendingRequests.filter(r => r.mentor === 'Ahmad Razif' && r.status === 'pending');
+    if (countEl) countEl.textContent = mine.length > 0 ? String(mine.length) : '';
+    if (!mine.length) {
+      list.innerHTML = '<div style="padding:24px 20px;text-align:center;color:var(--warm-gray);font-size:13px">No pending session invites.</div>';
+      return;
+    }
+    list.innerHTML = mine.map(r => `
+      <div class="session-item">
+        <div class="session-dot session-dot-amber"></div>
+        <div class="session-content">
+          <div class="session-title">${r.participant} · ${r.slot}</div>
+          <div class="session-meta">${r.program}</div>
+        </div>
+        <div class="match-action-row" style="margin:0">
+          <button type="button" class="btn btn-approve btn-xs" onclick="respondToInvite('${r.id}','confirmed')">Accept</button>
+          <button type="button" class="btn btn-ghost btn-xs" onclick="respondToInvite('${r.id}','declined')">Decline</button>
+        </div>
+      </div>`).join('');
+  }
+
+  function refreshParticipantRequests() {
+    const list    = document.getElementById('participant-requests-list');
+    const countEl = document.getElementById('participant-requests-count');
+    if (!list) return;
+    const mine = pendingRequests.filter(r => r.participant === 'Lena Williams');
+    if (countEl) countEl.textContent = mine.length + ' pending';
+    if (!mine.length) {
+      list.innerHTML = '<div style="padding:24px 20px;text-align:center;color:var(--warm-gray);font-size:13px">No session requests yet. Book a session above to get started.</div>';
+      return;
+    }
+    const statusBadge = s => {
+      if (s === 'confirmed') return '<span class="badge completed">Confirmed</span>';
+      if (s === 'declined')  return '<span class="badge urgent">Declined</span>';
+      return '<span class="badge pending">Pending</span>';
+    };
+    list.innerHTML = mine.map(r => `
+      <div class="session-item">
+        <div class="session-dot session-dot-amber"></div>
+        <div class="session-content">
+          <div class="session-title">Request to ${r.mentor}</div>
+          <div class="session-meta">${r.slot} · ${r.program}</div>
+        </div>
+        ${statusBadge(r.status)}
+      </div>`).join('');
+  }
+
+  function respondToInvite(id, status) {
+    const req = pendingRequests.find(r => r.id === id);
+    if (req) req.status = status;
+    refreshMentorInvites();
+    refreshParticipantRequests();
+  }
+
+  /* ── Global UI bindings ── */
   document.querySelectorAll('.date-pill').forEach(pill => {
     pill.addEventListener('click', () => {
       pill.closest('.date-pills').querySelectorAll('.date-pill').forEach(p => p.classList.remove('active'));
@@ -1702,17 +2011,24 @@
     });
   });
 
+  document.getElementById('new-prog-modal').addEventListener('click', function(e) {
+    const rect = this.getBoundingClientRect();
+    const outside = e.clientX < rect.left || e.clientX > rect.right ||
+                    e.clientY < rect.top  || e.clientY > rect.bottom;
+    if (outside) this.close();
+  });
+
   /* ── Booking Flow ── */
-  const BK_STEPS = ['program','time','intent','scanning','match','confirm','done'];
+  const BK_STEPS  = ['program','time','intent','scanning','match','confirm','done'];
   const BK_LABELS = ['Choose program','Pick a time','Your needs','Finding mentor…','Top matches','Confirm','Done'];
 
   let bkStep = 0;
-  let bkSel = { program: null, time: null, intent: '', mentor: null };
+  let bkSel  = { program: null, time: null, intent: '', mentor: null };
 
   const bkPrograms = [
-    { id:'fintech',   name:'GfS — Fintech Cohort',    meta:'Mar–Jun · 3 startups',  tags:['Fintech','Payments','Lending'] },
-    { id:'logistics', name:'GfS — Logistics Batch',   meta:'Apr–Jul · 2 startups',  tags:['Logistics','Supply chain','E-commerce'] },
-    { id:'hrtech',    name:'GfS — HR Tech Track',     meta:'May–Aug · 1 startup',   tags:['HR Tech','Talent','SaaS'] },
+    { id:'fintech',   name:'GfS — Fintech Cohort',  meta:'Mar–Jun · 3 startups', tags:['Fintech','Payments','Lending'] },
+    { id:'logistics', name:'GfS — Logistics Batch', meta:'Apr–Jul · 2 startups', tags:['Logistics','Supply chain','E-commerce'] },
+    { id:'hrtech',    name:'GfS — HR Tech Track',   meta:'May–Aug · 1 startup',  tags:['HR Tech','Talent','SaaS'] },
   ];
 
   const bkSlots = [
@@ -1725,15 +2041,15 @@
   ];
 
   const bkMentors = [
-    { initials:'AR', bg:'#2A7B75', name:'Ahmad Razif',   role:'Ex-Grab Payments Lead · Fintech Advisor', score:94,
+    { initials:'AR', bg:'#2A7B75', name:'Ahmad Razif',  role:'Ex-Grab Payments Lead · Fintech Advisor', score:94,
       reason:'Deep payments infrastructure experience directly matches your challenge.',
       evidence:'Mentored CashFlow in Batch 4 — outcome score 4.8/5',
       tags:['Fintech','Payments','B2C'] },
-    { initials:'SC', bg:'#C8652A', name:'Sarah Chen',    role:'CMO · 3 SEA Startups',                    score:81,
+    { initials:'SC', bg:'#C8652A', name:'Sarah Chen',   role:'CMO · 3 SEA Startups', score:81,
       reason:'B2C growth expertise fits your customer acquisition goal.',
       evidence:'No prior fintech history — profile match only',
       tags:['Growth','B2C','Marketing'] },
-    { initials:'RK', bg:'#D4A017', name:'Raj Krishnan',  role:'B2B SaaS Founder · Exited',              score:67,
+    { initials:'RK', bg:'#D4A017', name:'Raj Krishnan', role:'B2B SaaS Founder · Exited', score:67,
       reason:'Fintech background is relevant but focus is B2B SaaS, not B2C payments.',
       evidence:'Mentored LendMe in Batch 2 — outcome score 3.9/5',
       tags:['B2B SaaS','Enterprise sales'] },
@@ -1745,11 +2061,12 @@
     const dots = document.getElementById('bk-dots');
     const lbl  = document.getElementById('bk-step-label');
     if (!dots || !lbl) return;
-    const visSteps = BK_STEPS.filter(s => s !== 'scanning');
-    const visIdx   = visSteps.indexOf(BK_STEPS[bkStep]);
-    dots.innerHTML = visSteps.map((_, i) =>
-      `<span class="bkdot ${i < visIdx ? 'done' : i === visIdx ? 'active' : ''}"></span>`
-    ).join('');
+    const visSteps  = BK_STEPS.filter(s => s !== 'scanning');
+    const curVisIdx = visSteps.indexOf(BK_STEPS[bkStep]);
+    dots.innerHTML = visSteps.map((_, i) => {
+      const cls = i < curVisIdx ? 'done' : i === curVisIdx ? 'active' : '';
+      return `<span class="bkdot ${cls}"></span>`;
+    }).join('');
     lbl.textContent = BK_LABELS[bkStep] || '';
   }
 
@@ -1758,7 +2075,7 @@
     const el = document.getElementById('bk-content');
     if (!el) return;
     const step = BK_STEPS[bkStep];
-    if (step === 'program')  el.innerHTML = bkStepProgram();
+    if      (step === 'program')  el.innerHTML = bkStepProgram();
     else if (step === 'time')     el.innerHTML = bkStepTime();
     else if (step === 'intent')   el.innerHTML = bkStepIntent();
     else if (step === 'scanning') { el.innerHTML = bkStepScanning(); bkRunScan(); }
@@ -1769,38 +2086,45 @@
   }
 
   function bkStepProgram() {
+    const disabledAttr = bkSel.program ? '' : 'disabled';
     return `<p style="font-size:12px;color:var(--warm-gray);margin-bottom:12px">Which program is this session for?</p>
     <div class="bk-prog-grid">
       ${bkPrograms.map(p => `
-        <div class="bk-prog-card ${bkSel.program===p.id?'bk-selected':''}" data-bkprog="${p.id}">
+        <div class="bk-prog-card ${bkSel.program === p.id ? 'bk-selected' : ''}" data-bkprog="${p.id}">
           <div class="bk-prog-name">${p.name}</div>
           <div class="bk-prog-meta">${p.meta}</div>
           <span class="bk-prog-badge">Enrolled</span>
         </div>`).join('')}
     </div>
     <div class="bk-btn-row">
-      <button class="bk-next" id="bk-btn" ${!bkSel.program?'disabled':''} onclick="bkNext()">Continue →</button>
+      <button class="bk-next" id="bk-btn" ${disabledAttr} onclick="bkNext()">Continue →</button>
     </div>`;
   }
 
   function bkStepTime() {
+    const disabledAttr = bkSel.time !== null ? '' : 'disabled';
     return `<p style="font-size:12px;color:var(--warm-gray);margin-bottom:12px">Pick an available slot</p>
     <div class="bk-time-grid">
-      ${bkSlots.map((s,i) => `
-        <div class="bk-slot ${!s.avail?'bk-full':''} ${bkSel.time===i?'bk-selected':''}" data-bkslot="${i}">
+      ${bkSlots.map((s, i) => {
+        const fullCls     = s.avail ? '' : 'bk-full';
+        const selectedCls = bkSel.time === i ? 'bk-selected' : '';
+        return `
+        <div class="bk-slot ${fullCls} ${selectedCls}" data-bkslot="${i}">
           <div class="bk-slot-time">${s.time}</div>
           <div class="bk-slot-date">${s.date}</div>
-          <div class="bk-slot-avail">${s.avail?'Available':'Full'}</div>
-        </div>`).join('')}
+          <div class="bk-slot-avail">${s.avail ? 'Available' : 'Full'}</div>
+        </div>`;
+      }).join('')}
     </div>
     <div class="bk-btn-row">
       <button class="bk-back" onclick="bkBack()">← Back</button>
-      <button class="bk-next" id="bk-btn" ${bkSel.time===null?'disabled':''} onclick="bkNext()">Book this slot →</button>
+      <button class="bk-next" id="bk-btn" ${disabledAttr} onclick="bkNext()">Book this slot →</button>
     </div>`;
   }
 
   function bkStepIntent() {
-    const cnt = bkSel.intent.length;
+    const cnt          = bkSel.intent.length;
+    const disabledAttr = cnt >= 10 ? '' : 'disabled';
     return `<p style="font-size:12px;color:var(--warm-gray);margin-bottom:10px">What do you want to get out of this session?</p>
     <textarea class="bk-textarea" id="bk-ta" maxlength="300" placeholder="e.g. I want to discuss my career roadmap and figure out how to position myself for a senior PM role in the next 12 months…">${bkSel.intent}</textarea>
     <div class="bk-char"><span id="bk-cnt">${cnt}</span>/300</div>
@@ -1809,7 +2133,7 @@
     </div>
     <div class="bk-btn-row">
       <button class="bk-back" onclick="bkBack()">← Back</button>
-      <button class="bk-next" id="bk-btn" ${cnt<10?'disabled':''} onclick="bkNext()">Find my mentor ✦</button>
+      <button class="bk-next" id="bk-btn" ${disabledAttr} onclick="bkNext()">Find my mentor ✦</button>
     </div>`;
   }
 
@@ -1832,8 +2156,8 @@
     const labels = ['Reading your intent…','Scanning mentor profiles…','Scoring compatibility…','Finalising top matches…'];
     steps.forEach((id, i) => {
       setTimeout(() => {
-        const el = document.getElementById(id);
-        if (el) { el.classList.add('bk-done'); el.textContent = '✓ ' + el.textContent.slice(2); }
+        const s = document.getElementById(id);
+        if (s) { s.classList.add('bk-done'); s.textContent = '✓ ' + s.textContent.slice(2); }
         const lbl = document.getElementById('bk-scan-lbl');
         if (lbl) lbl.textContent = labels[i];
       }, i * 700);
@@ -1842,8 +2166,9 @@
   }
 
   function bkStepMatch() {
-    const top    = bkMentors[0];
-    const others = bkMentors.slice(1);
+    const top      = bkMentors[0];
+    const others   = bkMentors.slice(1);
+    const isSelected = m => (bkSel.mentor && bkSel.mentor.name === m.name) ? 'bk-selected' : '';
     return `<div>
       <div class="bk-best-badge">✦ Best match for you</div>
       <div class="bk-match-top">
@@ -1860,27 +2185,27 @@
         </div>
         <div class="bk-match-reason">${top.reason}</div>
         <div class="bk-match-evidence">📊 ${top.evidence}</div>
-        <div class="bk-match-tags">${top.tags.map(t=>`<span class="bk-mtag">${t}</span>`).join('')}</div>
+        <div class="bk-match-tags">${top.tags.map(t => `<span class="bk-mtag">${t}</span>`).join('')}</div>
       </div>
 
       <p style="font-size:11px;color:var(--warm-gray);margin-bottom:8px">Other suggestions — click to select</p>
       <div class="bk-match-other-grid">
         ${others.map(m => `
-          <div class="bk-match-other ${bkSel.mentor&&bkSel.mentor.name===m.name?'bk-selected':''}" data-bkmentor="${m.name}">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+          <div class="bk-match-other ${isSelected(m)}" data-bkmentor="${m.name}">
+            <div class="bk-match-header" style="margin-bottom:6px">
               <div class="bk-match-av" style="background:${m.bg};width:32px;height:32px;font-size:11px">${m.initials}</div>
               <div>
                 <div class="bk-match-name" style="font-size:12px">${m.name}</div>
-                <div class="bk-match-role" style="font-size:10px">${m.score}% match</div>
+                <div class="bk-match-role">${m.score}% match</div>
               </div>
             </div>
-            <div class="bk-match-tags">${m.tags.map(t=>`<span class="bk-mtag">${t}</span>`).join('')}</div>
+            <div class="bk-match-tags">${m.tags.map(t => `<span class="bk-mtag">${t}</span>`).join('')}</div>
           </div>`).join('')}
       </div>
 
       <div class="bk-btn-row">
         <button class="bk-back" onclick="bkBack()">← Back</button>
-        <button class="bk-next" onclick="bkSel.mentor=bkSel.mentor||bkMentors[0];bkNext()">
+        <button class="bk-next" onclick="bkSel.mentor = bkSel.mentor || bkMentors[0]; bkNext()">
           Book with ${top.name.split(' ').slice(-1)[0]} →
         </button>
       </div>
@@ -1893,8 +2218,8 @@
     const mentor = bkSel.mentor || bkMentors[0];
     return `<p style="font-size:12px;color:var(--warm-gray);margin-bottom:12px">Review your booking before confirming.</p>
     <div class="bk-confirm-box">
-      <div class="bk-confirm-row"><span class="bk-confirm-key">Program</span><span class="bk-confirm-val">${prog?.name}</span></div>
-      <div class="bk-confirm-row"><span class="bk-confirm-key">Date & time</span><span class="bk-confirm-val">${slot?.date} · ${slot?.time}</span></div>
+      <div class="bk-confirm-row"><span class="bk-confirm-key">Program</span><span class="bk-confirm-val">${prog ? prog.name : '—'}</span></div>
+      <div class="bk-confirm-row"><span class="bk-confirm-key">Date & time</span><span class="bk-confirm-val">${slot ? slot.date + ' · ' + slot.time : '—'}</span></div>
       <div class="bk-confirm-row"><span class="bk-confirm-key">Mentor</span><span class="bk-confirm-val">${mentor.name}</span></div>
       <div class="bk-confirm-row"><span class="bk-confirm-key">Duration</span><span class="bk-confirm-val">45 minutes · Video call</span></div>
     </div>
@@ -1910,41 +2235,28 @@
     const mentor = bkSel.mentor || bkMentors[0];
     const slot   = bkSlots[bkSel.time];
     const prog   = bkPrograms.find(p => p.id === bkSel.program);
-
-    // Push into shared pending queue
     const req = {
-      id: 'REQ-' + Date.now(),
+      id:          'REQ-' + Date.now(),
       participant: 'Lena Williams',
-      participantInitials: 'LW',
-      participantBg: '#C8652A',
-      mentor: mentor.name,
-      mentorInitials: mentor.initials,
-      mentorBg: mentor.bg,
-      program: prog?.name,
-      slot: slot?.date + ' · ' + slot?.time,
-      intent: bkSel.intent,
-      status: 'pending',
-      submitted: new Date().toLocaleDateString('en-GB', {day:'numeric',month:'short'})
+      mentor:      mentor.name,
+      program:     prog  ? prog.name                   : '—',
+      slot:        slot  ? slot.date + ' · ' + slot.time : '—',
+      intent:      bkSel.intent,
+      status:      'pending',
+      submitted:   new Date().toLocaleDateString('en-GB', { day:'numeric', month:'short' })
     };
     pendingRequests.unshift(req);
     refreshMentorInvites();
     refreshParticipantRequests();
 
     el.innerHTML = `<div class="bk-success">
-      <div class="bk-success-icon" style="background:var(--amber-light);color:var(--amber);font-size:20px">⏳</div>
+      <div class="bk-success-icon">⏳</div>
       <div class="bk-success-title">Request sent!</div>
       <div class="bk-success-sub">
-        Your request to <strong>${mentor.name}</strong> for <strong>${slot?.date} at ${slot?.time}</strong> is awaiting their confirmation.<br><br>
+        Your request to <strong>${mentor.name}</strong> for <strong>${req.slot}</strong> is awaiting their confirmation.<br><br>
         You'll be notified once they respond.
       </div>
-      <div style="margin:16px 0;background:var(--amber-light);border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:10px">
-        <span style="font-size:18px">🕐</span>
-        <div>
-          <div style="font-size:12px;font-weight:600;color:var(--amber)">Pending mentor approval</div>
-          <div style="font-size:11px;color:var(--warm-gray);margin-top:2px">Track status in "My Requests" below</div>
-        </div>
-      </div>
-      <div class="bk-btn-row" style="justify-content:center;margin-top:4px">
+      <div class="bk-btn-row" style="justify-content:center;margin-top:16px">
         <button class="bk-next" onclick="bkSel={program:null,time:null,intent:'',mentor:null};bkStep=0;bkRender()">Submit another request</button>
       </div>
     </div>`;
@@ -1980,7 +2292,7 @@
     });
 
     document.querySelectorAll('[data-bkslot]').forEach(el => {
-      const idx = parseInt(el.dataset.bkslot);
+      const idx = Number.parseInt(el.dataset.bkslot, 10);
       if (!bkSlots[idx].avail) return;
       el.addEventListener('click', () => {
         bkSel.time = idx;
@@ -1995,35 +2307,32 @@
     if (ta) {
       ta.addEventListener('input', () => {
         bkSel.intent = ta.value;
-        const ct = document.getElementById('bk-cnt');
-        if (ct) ct.textContent = ta.value.length;
+        const ct  = document.getElementById('bk-cnt');
         const btn = document.getElementById('bk-btn');
-        if (btn) btn.disabled = ta.value.length < 10;
+        if (ct)  ct.textContent  = String(ta.value.length);
+        if (btn) btn.disabled    = ta.value.length < 10;
       });
     }
 
     document.querySelectorAll('[data-bkqt]').forEach(el => {
       el.addEventListener('click', () => {
-        const ta = document.getElementById('bk-ta');
-        if (!ta) return;
-        const append = el.dataset.bkqt.toLowerCase();
-        ta.value = ta.value ? ta.value + ', ' + append : append;
-        bkSel.intent = ta.value;
-        const ct = document.getElementById('bk-cnt');
-        if (ct) ct.textContent = ta.value.length;
+        const textarea = document.getElementById('bk-ta');
+        if (!textarea) return;
+        const tag = el.dataset.bkqt.toLowerCase();
+        textarea.value = textarea.value ? textarea.value + ', ' + tag : tag;
+        bkSel.intent   = textarea.value;
+        const ct  = document.getElementById('bk-cnt');
         const btn = document.getElementById('bk-btn');
-        if (btn) btn.disabled = ta.value.length < 10;
+        if (ct)  ct.textContent  = String(textarea.value.length);
+        if (btn) btn.disabled    = textarea.value.length < 10;
       });
     });
 
     document.querySelectorAll('[data-bkmentor]').forEach(el => {
       el.addEventListener('click', () => {
-        const name = el.dataset.bkmentor;
-        bkSel.mentor = bkMentors.find(m => m.name === name) || bkMentors[0];
+        bkSel.mentor = bkMentors.find(m => m.name === el.dataset.bkmentor) || bkMentors[0];
         document.querySelectorAll('[data-bkmentor]').forEach(e => e.classList.remove('bk-selected'));
         el.classList.add('bk-selected');
-        const nextBtn = el.closest('div[style]')?.nextElementSibling?.querySelector('.bk-next');
-        if (nextBtn) nextBtn.textContent = 'Book with ' + bkSel.mentor.name.split(' ').slice(-1)[0] + ' →';
       });
     });
   }
