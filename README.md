@@ -1,57 +1,54 @@
-# StarConnector
+# StarsConnector: The Programmable Ecosystem Platform
 
-StarConnector is an AI-powered mentor matching platform designed for Cradle startup programmes. It streamlines the process of connecting startup founders with the right mentors by leveraging artificial intelligence to evaluate skills, industry fit, business stage, availability, and past feedback.
+**StarsConnector** is an AI-enabled ecosystem management platform designed for organizations like **Cradle**. It transforms ad-hoc manual coordination into a structured, programmable, and automated system by treating ecosystem relationships as first-class digital entities.
 
-## Project Structure
+---
 
-The project is divided into two main components:
+## 🚀 Tech Stack
 
-### 1. Backend (`/version2/backend`)
-A RESTful API built with **FastAPI** to handle business logic, database operations, and AI mentor matching.
+### **Backend (Intelligence Engine)**
+- **FastAPI**: High-performance asynchronous Python framework.
+- **SQLAlchemy (v2.0)**: Advanced ORM for modeling ecosystem relationships.
+- **MySQL**: Persistent relational storage for ecosystem entities.
+- **Google Gemini AI**: Live integration for automated verification, scoring, and matching.
+- **Docker**: Full-stack containerization for instant deployment.
 
-- **Technology Stack:** FastAPI, Python, SQLAlchemy (PostgreSQL/pgvector).
-- **Key API Endpoints:** 
-  - `auth`: User authentication and role management.
-  - `dashboard`: Statistics and metrics for the platform.
-  - `applications`: Application submission, review, and status updates.
-  - `mentors`: Mentor profile directory.
-  - `matching`: AI recommendation engine for mentor matching.
-  - `milestones`: Startup project tracking.
+### **Frontend (Command Centre)**
+- **React + Vite**: Modern, high-speed UI development.
+- **Recharts**: Data visualization for real-time health and P&L tracking.
+- **Lucide React**: Consistent, high-fidelity iconography.
+- **Custom SVG Engine**: Interactive relationship graph visualization.
 
-### 2. Frontend (`/version2/frontend-simple`)
-A lightweight, single-page web dashboard (Vanilla HTML/CSS/JS) for Cradle staff to manage the startup ecosystem.
+---
 
-- **Technology Stack:** HTML5, CSS3, JavaScript (No external frameworks).
-- **Key Features:**
-  - **Overview Dashboard:** Visualize key metrics (Total Applications, Pending Reviews, Matches Generated).
-  - **Application Management:** Review applications, update statuses (Shortlist, Approve, Reject).
-  - **AI Match Generation:** One-click AI Mentor Matching with detailed reasoning, confidence scores, and multi-dimensional match breakdowns (Skills, Industry, Stage, Availability, etc.).
-  - **Mentor Directory:** Browse and filter mentor profiles.
-  - **Milestone Tracking:** Monitor startup progress and view AI-generated risk signals.
+## 💡 The Solution for Cradle
 
-## Core Data Models
+Cradle admins often face operational bottlenecks when scaling programs across regions. **StarsConnector** solves this by:
+1. **Automating Heavy Lifting**: AI-driven verification and scoring of applicants.
+2. **Intelligent Matching**: Data-backed mentor-startup pairings based on historical success.
+3. **Ecosystem Visibility**: A centralized Command Centre providing a real-time health map of all linkages.
 
-The system is built around a robust relational schema designed for a startup ecosystem:
-- **`users` & `organizations`:** Managing Cradle staff, founders, mentors, startups, and partners.
-- **`programmes`:** Cradle funding or accelerator programmes.
-- **`startup_profiles` & `mentor_profiles`:** Detailed profiles for matching.
-- **`applications`:** Startup applications to specific programmes.
-- **`matching_results`:** AI-generated match scores and reasoning.
-- **`mentor_sessions` & `session_feedback`:** Managing meetings and extracting AI insights from feedback.
-- **`project_milestones`:** Tracking startup progress and identifying risks.
+---
 
-## Running the Project
+## 🛠️ Getting Started
 
-Both the backend and frontend come containerized with Docker.
+### **Run with Docker (Recommended)**
+The entire stack (FastAPI + MySQL + Frontend) is containerized for ease of use.
 
-To run the backend services (including the database and API), navigate to the backend directory and use Docker Compose:
-```bash
-cd version2/backend
-docker-compose up -d
-```
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/zeposs/MyHack2026.git
+   cd MyHack2026/version2/backend
+   ```
+2. **Launch the stack**:
+   ```bash
+   docker-compose up -d
+   ```
+3. **Access the App**:
+   - Backend API: `http://localhost:8000`
+   - Documentation: `http://localhost:8000/docs`
 
-For the frontend, you can simply serve the `index.html` locally or build the Docker image provided in `version2/frontend-simple`.
+---
 
-## Demo Accounts
-- **Admin (Cradle Staff):** `admin@cradle.com.my` / `admin1234`
-- **Founder:** `ali@foodtech.my` / `founder1234`
+## 🎯 Our Mission
+> *"We aren't just automating emails; we’ve built a technical architecture that treats ecosystem relationships as **first-class, programmable entities**. That is how we scale innovation."*
