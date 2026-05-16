@@ -1019,131 +1019,60 @@ select:focus-visible,
   background: var(--amber);
 }
 
-.legend-line {
-  background: var(--line-strong);
-  display: inline-block;
-  height: 2px;
-  width: 24px;
-}
-
-.graph-canvas {
-  aspect-ratio: 980 / 760;
-  background:
-    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    rgba(4, 11, 12, 0.5);
-  background-size: 42px 42px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  overflow: hidden;
-  position: relative;
-}
-
-.graph-canvas svg {
-  display: block;
-  height: 100%;
+/* ─── Ecosystem Graph ──────────────────────────────────────────── */
+.graph-wrapper {
+  padding: 20px 32px 32px;
   width: 100%;
 }
-
-.graph-links line {
-  animation: drawLine 900ms ease both;
-  opacity: 0;
-  stroke: rgba(141, 160, 164, 0.46);
-  stroke-dasharray: 650;
-  stroke-dashoffset: 650;
-  stroke-width: 1.4;
+.graph-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 16px;
 }
+.legend { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; flex-shrink: 0; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text2); }
+.legend-dot { width: 9px; height: 9px; border-radius: 50%; }
 
-.graph-node {
-  animation: nodeIn 420ms ease both;
-  cursor: pointer;
-  opacity: 0;
+.graph-canvas-wrap {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  position: relative;
+  overflow: hidden;
 }
-
-.graph-node circle {
-  filter: url("#nodeGlow");
-  stroke: rgba(255, 255, 255, 0.72);
-  stroke-width: 1.4;
-  transition:
-    r 160ms ease,
-    stroke 160ms ease;
-}
-
-.graph-node.mentor circle {
-  fill: rgba(46, 231, 209, 0.8);
-}
-
-.graph-node.participant circle {
-  fill: rgba(255, 191, 71, 0.82);
-}
-
-.graph-node.needs-attention circle,
-.graph-node.watch circle {
-  fill: rgba(255, 191, 71, 0.92);
-}
-
-.graph-node.at-risk circle {
-  fill: rgba(255, 107, 107, 0.9);
-}
-
-.graph-node.light-touch circle {
-  fill: rgba(183, 148, 255, 0.86);
-}
-
-.graph-node:hover circle,
-.graph-node:focus-visible circle {
-  stroke: var(--text);
-  stroke-width: 2.4;
-}
-
-.graph-node text {
-  fill: #d6e6e8;
-  font-size: 12px;
-  pointer-events: none;
-}
-
-.graph-node.participant text {
+.graph-col-label {
+  position: absolute;
+  top: 16px;
   font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text3);
 }
+.graph-col-label.left  { left: 80px; }
+.graph-col-label.right { right: 80px; }
+
+.ecosystem-svg { display: block; }
 
 .graph-tooltip {
-  background: rgba(8, 14, 15, 0.94);
-  border: 1px solid rgba(46, 231, 209, 0.42);
-  border-radius: 8px;
-  box-shadow: var(--shadow);
-  min-width: 210px;
-  padding: 12px;
-  pointer-events: none;
   position: absolute;
-  transform: translate(12px, -50%);
-  z-index: 8;
+  background: #0d1e35;
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 12px 16px;
+  pointer-events: none;
+  z-index: 10;
+  min-width: 160px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+  transform: translate(16px, -50%);
 }
-
-.graph-tooltip.is-left {
-  transform: translate(calc(-100% - 12px), -50%);
-}
-
-.graph-tooltip strong,
-.graph-tooltip span,
-.graph-tooltip p {
-  display: block;
-}
-
-.graph-tooltip strong {
-  margin-bottom: 4px;
-}
-
-.graph-tooltip span {
-  color: var(--teal);
-  font-size: 0.84rem;
-  font-weight: 800;
-}
-
-.graph-tooltip p {
-  color: var(--muted);
-  line-height: 1.35;
-  margin: 6px 0 10px;
-}
+.tt-name { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+.tt-sub  { font-size: 11px; color: var(--text2); margin-top: -6px; margin-bottom: 8px; }
+.tt-row  { display: flex; justify-content: space-between; gap: 16px; font-size: 12px; color: var(--text2); margin-bottom: 4px; }
+.tt-row:last-child { margin-bottom: 0; }
+.tt-row span:last-child { color: var(--text); font-weight: 600; }
 
 .monitoring-grid .project-panel {
   grid-column: span 4;
@@ -1162,68 +1091,66 @@ select:focus-visible,
 }
 
 .milestone-track {
-  display: grid;
-  gap: 10px;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  position: relative;
-}
-
-.milestone-step {
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  min-height: 144px;
-  min-width: 0;
-  padding: 14px;
-  position: relative;
-}
-
-.milestone-step span {
-  align-items: center;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid var(--line);
-  border-radius: 50%;
-  color: var(--soft);
   display: flex;
-  font-family: "IBM Plex Mono", "Roboto Mono", monospace;
-  font-size: 0.8rem;
-  font-weight: 900;
-  height: 32px;
+  align-items: flex-start;
+  gap: 0;
+  padding: 12px 0;
+  overflow-x: auto;
+}
+.milestone-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  position: relative;
+  min-width: 120px;
+}
+.milestone-connector {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  right: -50%;
+  height: 2px;
+  background: var(--border);
+  z-index: 0;
+}
+.milestone-connector.done { background: var(--green); }
+.milestone-dot {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--bg2);
+  display: flex;
+  align-items: center;
   justify-content: center;
-  margin-bottom: 18px;
-  width: 32px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text3);
+  z-index: 1;
+  transition: all 0.2s;
+  font-family: 'IBM Plex Mono', monospace;
 }
-
-.milestone-step strong {
-  display: block;
-  line-height: 1.22;
-  overflow-wrap: anywhere;
+.milestone-dot.done {
+  background: rgba(16,185,129,0.15);
+  border-color: var(--green);
+  color: var(--green);
 }
-
-.milestone-step p {
-  color: var(--muted);
-  font-size: 0.8rem;
-  margin: 8px 0 0;
-}
-
-.milestone-step.is-complete {
-  border-color: rgba(46, 231, 209, 0.32);
-}
-
-.milestone-step.is-complete span {
-  background: rgba(46, 231, 209, 0.14);
-  border-color: rgba(46, 231, 209, 0.4);
+.milestone-dot.current {
+  background: rgba(0,212,255,0.15);
+  border-color: var(--teal);
   color: var(--teal);
+  box-shadow: var(--glow-teal);
 }
-
-.milestone-step.is-current {
-  background: rgba(255, 191, 71, 0.08);
-  border-color: rgba(255, 191, 71, 0.5);
-}
-
-.milestone-step.is-current span {
-  background: rgba(255, 191, 71, 0.16);
-  border-color: rgba(255, 191, 71, 0.5);
-  color: var(--amber);
+.milestone-label { text-align: center; margin-top: 12px; padding: 0 6px; }
+.ml-name { font-size: 12px; font-weight: 600; color: var(--text); line-height: 1.3; }
+.ml-date { font-size: 11px; color: var(--text2); margin-top: 3px; font-family: 'IBM Plex Mono', monospace; }
+.ml-current {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--teal);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 4px;
 }
 
 .chart-wrap {

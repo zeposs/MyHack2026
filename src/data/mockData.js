@@ -139,6 +139,37 @@ export const ecosystemLinks = [
   ['m5', 'p19'],
 ];
 
+export const ECOSYSTEM_MENTORS = [
+  { id: 'em1', name: 'Dr. Aminah R.', sector: 'Healthcare', matches: 2 },
+  { id: 'em2', name: 'Rajan S.', sector: 'Operations', matches: 3 },
+  { id: 'em3', name: 'Lim Wei Hong', sector: 'Finance', matches: 4 },
+  { id: 'em4', name: 'Priya Nair', sector: 'Tech', matches: 2 },
+  { id: 'em5', name: 'Ahmad Fauzi', sector: 'Agriculture', matches: 1 },
+];
+
+export const ECOSYSTEM_PARTICIPANTS = [
+  { id: 'ep1', name: 'Ali Hassan', project: 'NurtureCare', sector: 'Healthcare', status: 'On-Track', mentorId: 'em1' },
+  { id: 'ep2', name: 'Siti Rahimah', project: 'FreshBox MY', sector: 'FoodTech', status: 'On-Track', mentorId: 'em2' },
+  { id: 'ep3', name: 'David Tan', project: 'EduPath', sector: 'EdTech', status: 'On-Track', mentorId: 'em4' },
+  { id: 'ep4', name: 'Nora Ismail', project: 'AgriSense', sector: 'Agriculture', status: 'Needs Attention', mentorId: 'em5' },
+  { id: 'ep5', name: 'Kevin Loh', project: 'PayLite', sector: 'FinTech', status: 'On-Track', mentorId: 'em3' },
+  { id: 'ep6', name: 'Farah Zain', project: 'CareLink', sector: 'Healthcare', status: 'At Risk', mentorId: 'em1' },
+  { id: 'ep7', name: 'Marcus Yeo', project: 'LogiFlow', sector: 'Logistics', status: 'On-Track', mentorId: 'em2' },
+  { id: 'ep8', name: 'Aisha Karim', project: 'GreenBuild', sector: 'PropTech', status: 'On-Track', mentorId: 'em3' },
+  { id: 'ep9', name: 'Rajesh Kumar', project: 'MediTrack', sector: 'HealthTech', status: 'On-Track', mentorId: 'em1' },
+  { id: 'ep10', name: 'Cindy Ong', project: 'BioFarm', sector: 'AgriTech', status: 'Needs Attention', mentorId: 'em5' },
+  { id: 'ep11', name: 'Hafiz Roslan', project: 'CloudKitchen', sector: 'FoodTech', status: 'On-Track', mentorId: 'em2' },
+  { id: 'ep12', name: 'Mei Lin', project: 'SkinSense', sector: 'HealthTech', status: 'On-Track', mentorId: 'em4' },
+  { id: 'ep13', name: 'Azrul Aziz', project: 'SolarHome', sector: 'CleanTech', status: 'On-Track', mentorId: 'em3' },
+  { id: 'ep14', name: 'Suriani Mat', project: 'CraftHive', sector: 'E-Commerce', status: 'At Risk', mentorId: 'em3' },
+  { id: 'ep15', name: 'Jin Wei', project: 'RoboClean', sector: 'DeepTech', status: 'On-Track', mentorId: 'em4' },
+  { id: 'ep16', name: 'Layla Hamid', project: 'TravelLocal', sector: 'Tourism', status: 'On-Track', mentorId: 'em2' },
+  { id: 'ep17', name: 'Chong Wei', project: 'DataSafe', sector: 'Cybersecurity', status: 'On-Track', mentorId: 'em4' },
+  { id: 'ep18', name: 'Nur Hidayah', project: 'KidLearn', sector: 'EdTech', status: 'Needs Attention', mentorId: 'em4' },
+  { id: 'ep19', name: 'Zulkifli A.', project: 'HalalChain', sector: 'FoodTech', status: 'On-Track', mentorId: 'em5' },
+  { id: 'ep20', name: 'Patricia Ng', project: 'WellnessApp', sector: 'HealthTech', status: 'On-Track', mentorId: 'em1' },
+];
+
 export const milestones = [
   { label: 'Application Approved', date: 'May 2026' },
   { label: 'Mentor Assigned', date: 'May 2026' },

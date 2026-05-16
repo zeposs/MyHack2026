@@ -37,14 +37,12 @@ import {
 import {
   aiVerdict,
   applicant,
-  ecosystemLinks,
-  ecosystemMentors,
-  ecosystemParticipants,
   mentors,
   milestones,
   monitoringProject,
   pnlData,
 } from './data/mockData';
+import EcosystemGraph from './components/EcosystemGraph';
 
 const tabs = [
   { id: 'participant', label: 'Participant', icon: UserRound },
@@ -65,10 +63,6 @@ function cx(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-function statusClass(status) {
-  return status.toLowerCase().replace(/\s+/g, '-');
-}
-
 function compactRM(value) {
   return `RM ${Math.round(value / 1000)}k`;
 }
@@ -87,7 +81,6 @@ export default function App() {
     date: '2026-05-21',
     time: '10:30 AM',
   });
-  const [selectedGraphNode, setSelectedGraphNode] = useState(null);
   const reviewTimer = useRef(null);
 
   useEffect(() => {
@@ -208,10 +201,7 @@ export default function App() {
         )}
 
         {activeTab === 'ecosystem' && (
-          <EcosystemView
-            selectedGraphNode={selectedGraphNode}
-            setSelectedGraphNode={setSelectedGraphNode}
-          />
+          <EcosystemGraph />
         )}
 
         {activeTab === 'monitoring' && <MonitoringView />}
@@ -702,145 +692,6 @@ function SessionBookingModal({ mentor, onClose, onConfirm, sessionDetails }) {
   );
 }
 
-function EcosystemView({ selectedGraphNode, setSelectedGraphNode }) {
-  const nodesById = useMemo(() => {
-    const map = new Map();
-    [...ecosystemMentors, ...ecosystemParticipants].forEach((node) => map.set(node.id, node));
-    return map;
-  }, []);
-
-  const links = useMemo(
-    () =>
-      ecosystemLinks.map(([source, target]) => ({
-        source: nodesById.get(source),
-        target: nodesById.get(target),
-      })),
-    [nodesById],
-  );
-
-  return (
-    <section className="scene-grid ecosystem-grid">
-      <div className="scene-intro">
-        <div>
-          <p className="eyebrow">Ecosystem graph</p>
-          <h2>Mentors, participants, and live relationship context</h2>
-        </div>
-        <StatusBadge status="approved">20 active projects</StatusBadge>
-      </div>
-
-      <article className="panel graph-panel">
-        <div className="graph-legend">
-          <span><i className="legend-dot mentor-dot" />Mentors</span>
-          <span><i className="legend-dot participant-dot" />Participants</span>
-          <span><i className="legend-line" />Assigned relationship</span>
-        </div>
-
-        <div className="graph-canvas">
-          <svg viewBox="0 0 980 760" role="img" aria-label="StarsConnector relationship graph">
-            <defs>
-              <filter id="nodeGlow" x="-40%" y="-40%" width="180%" height="180%">
-                <feGaussianBlur stdDeviation="4" result="blur" />
-                <feMerge>
-                  <feMergeNode in="blur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-            </defs>
-
-            <g className="graph-links">
-              {links.map((link, index) => (
-                <line
-                  key={`${link.source.id}-${link.target.id}`}
-                  x1={link.source.x}
-                  x2={link.target.x}
-                  y1={link.source.y}
-                  y2={link.target.y}
-                  style={{ animationDelay: `${index * 35}ms` }}
-                />
-              ))}
-            </g>
-
-            <g className="graph-nodes">
-              {ecosystemMentors.map((node, index) => (
-                <GraphNode
-                  index={index}
-                  key={node.id}
-                  node={node}
-                  onSelect={setSelectedGraphNode}
-                  type="mentor"
-                />
-              ))}
-              {ecosystemParticipants.map((node, index) => (
-                <GraphNode
-                  index={index + ecosystemMentors.length}
-                  key={node.id}
-                  node={node}
-                  onSelect={setSelectedGraphNode}
-                  type="participant"
-                />
-              ))}
-            </g>
-          </svg>
-
-          {selectedGraphNode && (
-            <div
-              className={cx('graph-tooltip', selectedGraphNode.x > 720 && 'is-left')}
-              style={{
-                left: `${(selectedGraphNode.x / 980) * 100}%`,
-                top: `${(selectedGraphNode.y / 760) * 100}%`,
-              }}
-            >
-              <strong>{selectedGraphNode.name}</strong>
-              <span>{selectedGraphNode.project || selectedGraphNode.sector}</span>
-              <p>{selectedGraphNode.project ? selectedGraphNode.sector : `${selectedGraphNode.status} mentor load`}</p>
-              <StatusBadge status={statusClass(selectedGraphNode.status)}>
-                {selectedGraphNode.status}
-              </StatusBadge>
-            </div>
-          )}
-        </div>
-      </article>
-
-      <article className="panel ecosystem-summary">
-        <div className="panel-heading">
-          <div>
-            <p className="eyebrow">Network health</p>
-            <h3>Relationship visibility</h3>
-          </div>
-          <Zap className="panel-icon" size={22} />
-        </div>
-        <div className="network-stats">
-          <InfoField label="Mentor nodes" value="5" />
-          <InfoField label="Participant nodes" value="20" />
-          <InfoField label="Active links" value="22" />
-          <InfoField label="Needs attention" value="3" />
-        </div>
-      </article>
-    </section>
-  );
-}
-
-function GraphNode({ index, node, onSelect, type }) {
-  const radius = type === 'mentor' ? 22 : 13;
-
-  return (
-    <g
-      className={cx('graph-node', type, statusClass(node.status))}
-      onBlur={() => onSelect(null)}
-      onFocus={() => onSelect(node)}
-      onMouseEnter={() => onSelect(node)}
-      onMouseLeave={() => onSelect(null)}
-      style={{ animationDelay: `${index * 45}ms` }}
-      tabIndex="0"
-    >
-      <circle cx={node.x} cy={node.y} r={radius} />
-      <text x={node.x + radius + 8} y={node.y + 4}>
-        {type === 'mentor' ? node.name : node.project}
-      </text>
-    </g>
-  );
-}
-
 function MonitoringView() {
   return (
     <section className="scene-grid monitoring-grid">
@@ -881,14 +732,20 @@ function MonitoringView() {
           {milestones.map((milestone, index) => {
             const current = index === monitoringProject.currentMilestone;
             const complete = index < monitoringProject.currentMilestone;
+            const nextComplete = index + 1 <= monitoringProject.currentMilestone;
             return (
-              <div
-                className={cx('milestone-step', complete && 'is-complete', current && 'is-current')}
-                key={milestone.label}
-              >
-                <span>{complete ? <Check size={16} /> : index + 1}</span>
-                <strong>{milestone.label}</strong>
-                <p>{milestone.date}</p>
+              <div className="milestone-item" key={milestone.label}>
+                {index < milestones.length - 1 && (
+                  <div className={cx('milestone-connector', nextComplete && 'done')} />
+                )}
+                <div className={cx('milestone-dot', complete && 'done', current && 'current')}>
+                  {complete ? <Check size={14} /> : index + 1}
+                </div>
+                <div className="milestone-label">
+                  <div className="ml-name">{milestone.label}</div>
+                  <div className="ml-date">{milestone.date}</div>
+                  {current && <div className="ml-current">● Current</div>}
+                </div>
               </div>
             );
           })}
