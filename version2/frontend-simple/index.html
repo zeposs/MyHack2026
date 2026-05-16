@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StartConnector — Cradle AI Mentor Matching</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f0f2f5;color:#1a1a2e}
+:root{--primary:#1a73e8;--primary-dark:#1557b0;--success:#34a853;--warning:#fbbc04;--danger:#ea4335;--purple:#7c3aed;--teal:#0d9488;--bg:#f0f2f5;--card:#fff;--border:#e0e0e0;--text:#1a1a2e;--text2:#5f6368}
+.login-wrapper{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1a73e8 0%,#7c3aed 100%)}
+.login-card{background:var(--card);border-radius:16px;padding:48px 40px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,.15)}
+.login-card h1{font-size:24px;margin-bottom:4px;color:var(--text)}
+.login-card p{color:var(--text2);margin-bottom:28px;font-size:14px}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:var(--text2)}
+.form-group input{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:14px;outline:none;transition:border .2s}
+.form-group input:focus{border-color:var(--primary)}
+.btn{padding:10px 20px;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{background:var(--primary-dark)}
+.btn-success{background:var(--success);color:#fff}
+.btn-success:hover{background:#2d9249}
+.btn-warning{background:var(--warning);color:#1a1a2e}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-sm{padding:6px 14px;font-size:12px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.error-msg{color:var(--danger);font-size:13px;margin-top:8px;display:none}
+.app-layout{display:flex;min-height:100vh}
+.sidebar{width:240px;background:var(--text);color:#fff;padding:24px 0;flex-shrink:0}
+.sidebar h2{padding:0 24px 20px;font-size:18px;border-bottom:1px solid rgba(255,255,255,.1)}
+.sidebar nav{margin-top:16px}
+.sidebar nav a{display:block;padding:10px 24px;color:rgba(255,255,255,.65);text-decoration:none;font-size:14px;transition:all .2s}
+.sidebar nav a:hover,.sidebar nav a.active{color:#fff;background:rgba(255,255,255,.08)}
+.sidebar .user-info{padding:16px 24px;margin-top:auto;border-top:1px solid rgba(255,255,255,.1);font-size:13px;color:rgba(255,255,255,.5)}
+.sidebar .user-info strong{color:#fff;display:block}
+.main{flex:1;padding:32px;overflow-y:auto}
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.page-header h1{font-size:22px}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-bottom:32px}
+.stat-card{background:var(--card);border-radius:12px;padding:20px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.stat-card .label{font-size:13px;color:var(--text2);margin-bottom:4px}
+.stat-card .value{font-size:28px;font-weight:700}
+.stat-card.blue .value{color:var(--primary)}
+.stat-card.green .value{color:var(--success)}
+.stat-card.purple .value{color:var(--purple)}
+.stat-card.teal .value{color:var(--teal)}
+.card{background:var(--card);border-radius:12px;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,.08);margin-bottom:20px}
+.card h2{font-size:16px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:10px 12px;font-size:13px;border-bottom:1px solid var(--border)}
+th{color:var(--text2);font-weight:600;font-size:12px;text-transform:uppercase}
+tr:hover{background:#f8f9fa}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.badge-blue{background:#e8f0fe;color:var(--primary)}
+.badge-green{background:#e6f4ea;color:var(--success)}
+.badge-yellow{background:#fef7e0;color:#e37400}
+.badge-red{background:#fce8e6;color:var(--danger)}
+.badge-purple{background:#f3e8ff;color:var(--purple)}
+.badge-gray{background:#f1f3f4;color:var(--text2)}
+.match-card{border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:12px;position:relative}
+.match-card.selected{border-color:var(--success);background:#f0fdf4}
+.match-card .rank{position:absolute;top:12px;right:16px;font-size:13px;color:var(--text2)}
+.match-card h3{font-size:15px;margin-bottom:2px}
+.match-card .title{color:var(--text2);font-size:13px;margin-bottom:8px}
+.match-card .score{font-size:24px;font-weight:700;color:var(--primary)}
+.match-card .reason{font-size:13px;color:var(--text2);margin:10px 0;line-height:1.5}
+.score-bars{display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;margin:10px 0}
+.score-bar{font-size:12px}
+.score-bar label{display:flex;justify-content:space-between;color:var(--text2);margin-bottom:2px}
+.score-bar .bar{height:4px;background:#e0e0e0;border-radius:2px;overflow:hidden}
+.score-bar .bar div{height:100%;border-radius:2px;background:var(--primary)}
+.milestone{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+.milestone:last-child{border:none}
+.milestone .icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.milestone .icon.done{background:#e6f4ea;color:var(--success)}
+.milestone .icon.progress{background:#fef7e0;color:#e37400}
+.milestone .icon.later{background:#f1f3f4;color:var(--text2)}
+.milestone .info h4{font-size:14px}
+.milestone .info p{font-size:12px;color:var(--text2);margin-top:2px}
+.back-link{font-size:13px;color:var(--primary);text-decoration:none;display:inline-flex;align-items:center;gap:4px;margin-bottom:16px}
+.back-link:hover{text-decoration:underline}
+.loading{text-align:center;padding:40px;color:var(--text2)}
+.toast{position:fixed;top:20px;right:20px;padding:12px 20px;border-radius:8px;color:#fff;font-size:13px;z-index:999;opacity:0;transition:opacity .3s}
+.toast.show{opacity:1}
+.toast.success{background:var(--success)}
+.toast.error{background:var(--danger)}
+.hidden{display:none!important}
+.api-config{margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.1)}
+.api-config label{font-size:12px;color:rgba(255,255,255,.5);display:block;margin-bottom:4px}
+.api-config input{width:100%;padding:6px 10px;border-radius:6px;border:none;font-size:13px;background:rgba(255,255,255,.12);color:#fff}
+.api-config input::placeholder{color:rgba(255,255,255,.35)}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.detail-grid .field{font-size:13px}
+.detail-grid .field label{font-weight:600;color:var(--text2);display:block;margin-bottom:2px}
+.tabs{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:20px}
+.tabs button{padding:8px 20px;font-size:13px;font-weight:600;border:none;background:none;cursor:pointer;color:var(--text2);border-bottom:2px solid transparent;margin-bottom:-2px}
+.tabs button.active{color:var(--primary);border-bottom-color:var(--primary)}
+</style>
+</head>
+<body>
+
+<div id="loginView" class="login-wrapper">
+  <div class="login-card">
+    <h1>StartConnector</h1>
+    <p>AI-Powered Mentor Matching for Cradle</p>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="loginEmail" placeholder="admin@cradle.com.my" value="admin@cradle.com.my">
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="loginPassword" placeholder="Password" value="admin1234">
+    </div>
+    <div id="loginError" class="error-msg">Invalid credentials</div>
+    <button class="btn btn-primary" style="width:100%;margin-top:8px" onclick="doLogin()">Sign In</button>
+    <p style="margin-top:16px;font-size:12px;color:var(--text2)">
+      Demo accounts:<br>
+      Admin: admin@cradle.com.my / admin1234<br>
+      Founder: ali@foodtech.my / founder1234
+    </p>
+  </div>
+</div>
+
+<div id="appView" class="app-layout hidden">
+  <div class="sidebar">
+    <h2>StartConnector</h2>
+    <nav>
+      <a href="#" onclick="navigate('dashboard')" id="nav-dashboard" class="active">Dashboard</a>
+      <a href="#" onclick="navigate('applications')" id="nav-applications">Applications</a>
+      <a href="#" onclick="navigate('mentors')" id="nav-mentors">Mentors</a>
+    </nav>
+    <div class="user-info">
+      <strong id="userName"></strong>
+      <span id="userRole"></span>
+      <br>
+      <a href="#" onclick="doLogout()" style="color:rgba(255,255,255,.5);font-size:12px;text-decoration:underline">Sign Out</a>
+    </div>
+    <div class="api-config">
+      <label>API Base URL</label>
+      <input type="text" id="apiUrl" value="http://localhost:8000" onchange="API_BASE=this.value">
+    </div>
+  </div>
+  <div class="main" id="mainContent"></div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+let API_BASE = 'http://localhost:8000';
+let TOKEN = localStorage.getItem('sc_token') || '';
+let CURRENT_USER = null;
+
+const STATUSES = {
+  submitted:{label:'Submitted',cls:'badge-blue'},
+  ai_reviewed:{label:'AI Reviewed',cls:'badge-purple'},
+  shortlisted:{label:'Shortlisted',cls:'badge-yellow'},
+  approved:{label:'Approved',cls:'badge-green'},
+  rejected:{label:'Rejected',cls:'badge-red'},
+  assigned_mentor:{label:'Mentor Assigned',cls:'badge-green'},
+};
+const MILESTONE_STATUSES = {
+  not_started:{label:'Not Started',cls:'later',icon:'○'},
+  in_progress:{label:'In Progress',cls:'progress',icon:'◐'},
+  completed:{label:'Completed',cls:'done',icon:'✓'},
+  delayed:{label:'Delayed',cls:'progress',icon:'!'},
+  blocked:{label:'Blocked',cls:'progress',icon:'✕'},
+};
+
+async function api(path, opts={}){
+  const headers = {'Content-Type':'application/json'};
+  if(TOKEN) headers['Authorization'] = 'Bearer '+TOKEN;
+  const res = await fetch(API_BASE+path, {...opts, headers});
+  if(res.status===401){doLogout();throw new Error('Session expired');}
+  if(!res.ok){const e=await res.json().catch(()=>({detail:'Request failed'}));throw new Error(e.detail||JSON.stringify(e));}
+  return res.json();
+}
+
+function toast(msg,type='success'){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.className='toast '+type+' show';
+  setTimeout(()=>el.classList.remove('show'),3000);
+}
+
+function showLoading(msg='Loading...'){
+  document.getElementById('mainContent').innerHTML='<div class="loading">'+msg+'</div>';
+}
+
+function esc(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function statusBadge(s){
+  const info=STATUSES[s]||{label:s,cls:'badge-gray'};
+  return '<span class="badge '+info.cls+'">'+info.label+'</span>';
+}
+
+async function doLogin(){
+  const email=document.getElementById('loginEmail').value;
+  const pw=document.getElementById('loginPassword').value;
+  try{
+    const data=await api('/auth/login',{method:'POST',body:JSON.stringify({email,password:pw})});
+    TOKEN=data.access_token;
+    localStorage.setItem('sc_token',TOKEN);
+    await loadApp();
+  }catch(e){
+    document.getElementById('loginError').style.display='block';
+    document.getElementById('loginError').textContent=e.message;
+  }
+}
+
+function doLogout(){
+  TOKEN='';CURRENT_USER=null;
+  localStorage.removeItem('sc_token');
+  document.getElementById('loginView').classList.remove('hidden');
+  document.getElementById('appView').classList.add('hidden');
+}
+
+async function loadApp(){
+  try{
+    CURRENT_USER=await api('/auth/me');
+    document.getElementById('loginView').classList.add('hidden');
+    document.getElementById('appView').classList.remove('hidden');
+    document.getElementById('userName').textContent=CURRENT_USER.name;
+    document.getElementById('userRole').textContent=CURRENT_USER.role.replace(/_/g,' ');
+    API_BASE=document.getElementById('apiUrl').value;
+    navigate('dashboard');
+  }catch(e){
+    doLogout();
+  }
+}
+
+function navigate(page){
+  document.querySelectorAll('.sidebar nav a').forEach(a=>a.classList.remove('active'));
+  const navEl=document.getElementById('nav-'+page);
+  if(navEl)navEl.classList.add('active');
+  if(page==='dashboard')renderDashboard();
+  else if(page==='applications')renderApplications();
+  else if(page==='mentors')renderMentors();
+}
+
+async function renderDashboard(){
+  showLoading();
+  try{
+    const stats=await api('/dashboard/stats');
+    document.getElementById('mainContent').innerHTML=`
+      <div class="page-header"><h1>Dashboard</h1></div>
+      <div class="stats-grid">
+        <div class="stat-card blue"><div class="label">Total Applications</div><div class="value">${stats.total_applications}</div></div>
+        <div class="stat-card purple"><div class="label">Pending Review</div><div class="value">${stats.pending_review}</div></div>
+        <div class="stat-card green"><div class="label">Approved</div><div class="value">${stats.approved}</div></div>
+        <div class="stat-card teal"><div class="label">Active Mentors</div><div class="value">${stats.total_mentors}</div></div>
+        <div class="stat-card blue"><div class="label">Active Programmes</div><div class="value">${stats.active_programmes}</div></div>
+        <div class="stat-card green"><div class="label">Matches Generated</div><div class="value">${stats.matches_generated}</div></div>
+      </div>
+    `;
+  }catch(e){toast(e.message,'error');}
+}
+
+async function renderApplications(){
+  showLoading();
+  try{
+    const apps=await api('/applications');
+    let rows=apps.map(a=>`
+      <tr onclick="renderApplicationDetail('${a.id}')" style="cursor:pointer">
+        <td>${esc(a.application_title)}</td>
+        <td>${esc(a.startup_name||'-')}</td>
+        <td>${esc(a.programme_name||'-')}</td>
+        <td>${esc(a.requested_amount?'RM '+Number(a.requested_amount).toLocaleString():'-')}</td>
+        <td>${statusBadge(a.status)}</td>
+        <td>${new Date(a.created_at).toLocaleDateString()}</td>
+      </tr>`).join('');
+    document.getElementById('mainContent').innerHTML=`
+      <div class="page-header"><h1>Applications</h1></div>
+      <div class="card">
+        <table>
+          <thead><tr><th>Title</th><th>Startup</th><th>Programme</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
+          <tbody>${rows||'<tr><td colspan="6" style="text-align:center;color:var(--text2)">No applications found</td></tr>'}</tbody>
+        </table>
+      </div>`;
+  }catch(e){toast(e.message,'error');}
+}
+
+async function renderApplicationDetail(id){
+  showLoading();
+  try{
+    const [app,matches]=await Promise.all([
+      api('/applications/'+id),
+      api('/applications/'+id+'/matches').catch(()=>[]),
+    ]);
+    let matchHtml='';
+    if(matches.length>0){
+      matchHtml=matches.map(m=>{
+        const pct=n=>Math.round(Number(n));
+        return `
+        <div class="match-card ${m.selected_by_cradle?'selected':''}">
+          <div class="rank">#${m.rank_position}</div>
+          <h3>${esc(m.mentor_name||'Unknown')}</h3>
+          <div class="title">${esc(m.mentor_title||'')} ${m.mentor_availability?'· <span class="badge badge-'+(m.mentor_availability==='available'?'green':'yellow')+'">'+m.mentor_availability+'</span>':''}</div>
+          <div class="score">${pct(m.match_score)}%</div>
+          <div class="reason">${esc(m.reason_summary)}</div>
+          <div class="score-bars">
+            <div class="score-bar"><label><span>Skills</span><span>${pct(m.skill_match_score)}%</span></label><div class="bar"><div style="width:${pct(m.skill_match_score)}%"></div></div></div>
+            <div class="score-bar"><label><span>Industry</span><span>${pct(m.industry_match_score)}%</span></label><div class="bar"><div style="width:${pct(m.industry_match_score)}%"></div></div></div>
+            <div class="score-bar"><label><span>Stage</span><span>${pct(m.stage_match_score)}%</span></label><div class="bar"><div style="width:${pct(m.stage_match_score)}%"></div></div></div>
+            <div class="score-bar"><label><span>Availability</span><span>${pct(m.availability_score)}%</span></label><div class="bar"><div style="width:${pct(m.availability_score)}%"></div></div></div>
+            <div class="score-bar"><label><span>Feedback</span><span>${pct(m.past_feedback_score)}%</span></label><div class="bar"><div style="width:${pct(m.past_feedback_score)}%"></div></div></div>
+            <div class="score-bar"><label><span>Goal Fit</span><span>${pct(m.goal_fit_score)}%</span></label><div class="bar"><div style="width:${pct(m.goal_fit_score)}%"></div></div></div>
+          </div>
+          ${m.selected_by_cradle?'<div class="badge badge-green" style="margin-top:8px">Selected by Cradle</div>':
+            '<button class="btn btn-success btn-sm" style="margin-top:8px" onclick="selectMentor(\''+id+'\',\''+m.mentor_profile_id+'\')">Select This Mentor</button>'}
+        </div>`;
+      }).join('');
+    }else{
+      matchHtml='<p style="color:var(--text2);font-size:14px">No matches yet. Click "Generate AI Matches" to start.</p>';
+    }
+
+    const statusActions=app.status==='submitted'||app.status==='ai_reviewed'?`
+      <select id="statusSelect" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;margin-right:8px">
+        <option value="shortlisted">Shortlist</option>
+        <option value="approved">Approve</option>
+        <option value="rejected">Reject</option>
+      </select>
+      <button class="btn btn-primary btn-sm" onclick="updateStatus('${id}')">Update Status</button>
+    `:'';
+
+    document.getElementById('mainContent').innerHTML=`
+      <a href="#" class="back-link" onclick="navigate('applications');return false">&larr; Back to Applications</a>
+      <div class="page-header">
+        <h1>${esc(app.application_title)}</h1>
+        <div>
+          ${statusActions}
+          <button class="btn btn-primary btn-sm" onclick="generateMatches('${id}')" id="genMatchBtn">Generate AI Matches</button>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Application Details</h2>
+        <div class="detail-grid">
+          <div class="field"><label>Startup</label>${esc(app.startup_name||'-')}</div>
+          <div class="field"><label>Programme</label>${esc(app.programme_name||'-')}</div>
+          <div class="field"><label>Applicant</label>${esc(app.applicant_name||'-')}</div>
+          <div class="field"><label>Status</label>${statusBadge(app.status)}</div>
+          <div class="field"><label>Requested Amount</label>${app.requested_amount?'RM '+Number(app.requested_amount).toLocaleString():'-'}</div>
+          <div class="field"><label>Submitted</label>${new Date(app.created_at).toLocaleString()}</div>
+        </div>
+        ${app.application_summary?'<p style="font-size:13px;line-height:1.6;color:var(--text2)">'+esc(app.application_summary)+'</p>':''}
+        ${app.ai_summary?'<div style="margin-top:12px;padding:12px;background:#f3e8ff;border-radius:8px;font-size:13px"><strong>AI Summary:</strong> '+esc(app.ai_summary)+'</div>':''}
+        ${app.ai_risk_level?'<div style="margin-top:8px"><span class="badge badge-'+(app.ai_risk_level==='low'?'green':app.ai_risk_level==='medium'?'yellow':'red')+'">Risk: '+app.ai_risk_level+'</span></div>':''}
+      </div>
+      <div class="card">
+        <h2>AI Mentor Matches</h2>
+        ${matchHtml}
+      </div>
+      <div id="milestonesSection"></div>
+    `;
+    loadMilestones(app.startup_profile_id);
+  }catch(e){toast(e.message,'error');}
+}
+
+async function generateMatches(appId){
+  const btn=document.getElementById('genMatchBtn');
+  btn.disabled=true;btn.textContent='Generating...';
+  try{
+    const matches=await api('/applications/'+appId+'/generate-matches',{method:'POST'});
+    toast('Generated '+matches.length+' mentor matches');
+    renderApplicationDetail(appId);
+  }catch(e){
+    toast(e.message,'error');
+    btn.disabled=false;btn.textContent='Generate AI Matches';
+  }
+}
+
+async function selectMentor(appId,mentorProfileId){
+  try{
+    await api('/applications/'+appId+'/matches/select',{method:'POST',body:JSON.stringify({mentor_profile_id:mentorProfileId})});
+    toast('Mentor selected successfully');
+    renderApplicationDetail(appId);
+  }catch(e){toast(e.message,'error');}
+}
+
+async function updateStatus(appId){
+  const sel=document.getElementById('statusSelect');
+  if(!sel)return;
+  try{
+    await api('/applications/'+appId+'/status',{method:'PATCH',body:JSON.stringify({status:sel.value})});
+    toast('Status updated to '+sel.value);
+    renderApplicationDetail(appId);
+  }catch(e){toast(e.message,'error');}
+}
+
+async function loadMilestones(startupId){
+  if(!startupId)return;
+  try{
+    const milestones=await api('/startups/'+startupId+'/milestones');
+    if(!milestones.length)return;
+    let html=milestones.map(m=>{
+      const info=MILESTONE_STATUSES[m.status]||MILESTONE_STATUSES.not_started;
+      return `<div class="milestone">
+        <div class="icon ${info.cls}">${info.icon}</div>
+        <div class="info">
+          <h4>${esc(m.title)}</h4>
+          <p>${esc(m.description||'')}</p>
+          <p style="margin-top:4px">
+            <span class="badge ${info.cls==='done'?'badge-green':info.cls==='progress'?'badge-yellow':'badge-gray'}">${info.label}</span>
+            ${m.target_date?' · Target: '+m.target_date:''}
+            ${m.progress_percentage>0?' · '+m.progress_percentage+'%':''}
+            ${m.ai_risk_signal?' · <span class="badge badge-'+(m.ai_risk_signal==='low'?'green':m.ai_risk_signal==='medium'?'yellow':'red')+'">Risk: '+m.ai_risk_signal+'</span>':''}
+          </p>
+          ${m.ai_summary?'<p style="margin-top:4px;font-style:italic;color:var(--text2)">AI: '+esc(m.ai_summary)+'</p>':''}
+        </div>
+      </div>`;
+    }).join('');
+    document.getElementById('milestonesSection').innerHTML=`
+      <div class="card"><h2>Project Milestones</h2>${html}</div>`;
+  }catch(e){}
+}
+
+async function renderMentors(){
+  showLoading();
+  try{
+    const mentors=await api('/mentors');
+    let rows=mentors.map(m=>`
+      <tr>
+        <td><strong>${esc(m.user_name||'Unknown')}</strong></td>
+        <td>${esc(m.title||'-')}</td>
+        <td>${esc(m.organization_name||'-')}</td>
+        <td>${(m.industries||[]).map(i=>'<span class="badge badge-blue">'+esc(i)+'</span>').join(' ')}</td>
+        <td>${(m.skills||[]).slice(0,3).map(s=>'<span class="badge badge-purple">'+esc(s)+'</span>').join(' ')}</td>
+        <td>${m.years_experience||'-'} yrs</td>
+        <td>${m.average_rating||'0'} / 5</td>
+        <td><span class="badge badge-${m.availability_status==='available'?'green':m.availability_status==='limited'?'yellow':'red'}">${m.availability_status}</span></td>
+      </tr>`).join('');
+    document.getElementById('mainContent').innerHTML=`
+      <div class="page-header"><h1>Mentors</h1></div>
+      <div class="card">
+        <table>
+          <thead><tr><th>Name</th><th>Title</th><th>Org</th><th>Industries</th><th>Skills</th><th>Exp</th><th>Rating</th><th>Availability</th></tr></thead>
+          <tbody>${rows||'<tr><td colspan="8" style="text-align:center;color:var(--text2)">No mentors found</td></tr>'}</tbody>
+        </table>
+      </div>`;
+  }catch(e){toast(e.message,'error');}
+}
+
+(async function(){
+  if(TOKEN){
+    await loadApp();
+  }
+})();
+
+document.getElementById('loginEmail').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
+document.getElementById('loginPassword').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
+</script>
+</body>
+</html>
