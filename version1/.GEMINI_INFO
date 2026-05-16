@@ -1,0 +1,27 @@
+# API Key
+AIzaSyDptpq0UDPb2KZcY1HMP-SIUQz0vrlg3dU
+
+# Name
+2026 MyHack
+
+# Project name
+projects/794058519267
+
+# Project number
+794058519267
+
+curl "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent" \
+  -H 'Content-Type: application/json' \
+  -H 'X-goog-api-key: AIzaSyDptpq0UDPb2KZcY1HMP-SIUQz0vrlg3dU' \
+  -X POST \
+  -d '{
+    "contents": [
+      {
+        "parts": [
+          {
+            "text": "Explain how AI works in a few words"
+          }
+        ]
+      }
+    ]
+  }'
