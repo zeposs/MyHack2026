@@ -1,4 +1,4 @@
-# PRD — StartConnector
+# PRD — StarsConnector
 
 **Tagline:** AI-powered Relationship Operating System for startup and innovation ecosystems
 **Version:** 1.0 (Hackathon)
@@ -19,7 +19,7 @@ Three specific failures:
 
 **No Monitoring** — Once a match is approved, the admin's job is considered done. Nobody tracks whether the relationship is actually working. Mentors go quiet. Startups get stuck. Problems surface only when it's too late to intervene.
 
-**StartConnector** solves all three. It treats every mentor, startup, partner, programme, event, and outcome as a first-class data entity — building an ecosystem memory that grows smarter with every relationship recorded.
+**StarsConnector** solves all three. It treats every mentor, startup, partner, programme, event, and outcome as a first-class data entity — building an ecosystem memory that grows smarter with every relationship recorded.
 
 ---
 
@@ -78,21 +78,21 @@ The AI monitors each relationship and:
 - **Who:** Google for Startups Accelerator programme manager, ecosystem lead
 - **Goal:** Run a high-quality mentorship programme without the admin burden
 - **Pain:** Manual matching, no visibility into relationship health, starts every cohort from scratch
-- **Value from StartConnector:** AI matches in seconds, dashboard shows health of every relationship, history carries forward
+- **Value from StarsConnector:** AI matches in seconds, dashboard shows health of every relationship, history carries forward
 
 ### Mentor
 
 - **Who:** Experienced founder, corporate exec, domain expert
 - **Goal:** Give focused mentorship where their expertise truly fits
 - **Pain:** Matched to startups outside their domain; no advance context about the startup's challenge
-- **Value from StartConnector:** Matched by AI based on actual expertise; sees why they were chosen; has session history in one place
+- **Value from StarsConnector:** Matched by AI based on actual expertise; sees why they were chosen; has session history in one place
 
 ### Startup Participant
 
 - **Who:** Early-stage founder enrolled in an accelerator
 - **Goal:** Get the right mentor for their specific challenge right now
 - **Pain:** Generic assignment; no way to see who fits or why
-- **Value from StartConnector:** Guided wizard asks about the challenge, AI surfaces ranked mentors with reasons, founder understands the recommendation before saying yes
+- **Value from StarsConnector:** Guided wizard asks about the challenge, AI surfaces ranked mentors with reasons, founder understands the recommendation before saying yes
 
 ---
 
@@ -359,7 +359,7 @@ Proposed → Matched → Active → Check-in Due → Completed → Archived
 ## 10. Demo Flow (8-Step Judge Walkthrough)
 
 ```text
-[1] Admin opens StartConnector dashboard (live Firebase URL)
+[1] Admin opens StarsConnector dashboard (live Firebase URL)
     → Stat cards: 12 Participants | 8 Active Mentors | 3 At Risk | 24 Total Relationships
 
 [2] Admin sees the relationship table — each row shows actor, stage, health badge
@@ -390,7 +390,7 @@ Proposed → Matched → Active → Check-in Due → Completed → Archived
     "Ahmad Razif performed well last cohort (4.8/5 with a similar startup) — reuse?"
 
 Closing pitch line:
-"StartConnector — an AI-powered Relationship Operating System for ecosystems.
+"StarsConnector — an AI-powered Relationship Operating System for ecosystems.
  Built on Gemini, Cloud Run, and Firebase. The more programmes you run, the smarter it gets."
 ```
 
@@ -431,7 +431,7 @@ Closing pitch line:
 ### Backend → Cloud Run
 
 ```bash
-gcloud run deploy startconnector-api \
+gcloud run deploy StarsConnector-api \
   --source ./backend \
   --region asia-southeast1 \
   --allow-unauthenticated \

@@ -1,17 +1,17 @@
-# StartConnector — Hackathon Steps Analysis
+# StarsConnector — Hackathon Steps Analysis
 
 ## Confirmed Decisions
 
 | Decision | Answer |
 | --- | --- |
-| Project name | **StartConnector** |
+| Project name | **StarsConnector** |
 | Backend | **Python FastAPI** |
 | AI | **Gemini API** (gemini-1.5-flash) |
 | Deployment | **Google Cloud** — Cloud Run (API) + Firebase Hosting (frontend) |
 | Time budget | **5 hours** |
 | Team split | **Frontend track + Backend track** |
 | Event context | **Google / GCP event** — lean into the full Google stack |
-| Branding | Keep existing design, rename MentorBridge → StartConnector |
+| Branding | Keep existing design, rename MentorBridge → StarsConnector |
 | Seed data | Keep existing names (Ahmad, Sarah, Raj, David, Nurul) |
 
 ---
@@ -24,14 +24,14 @@
 - 7-step AI mentor matching wizard (UI only, hardcoded mock data)
 - All data hardcoded — no API calls, no persistence
 
-**What the HTML still says:** "MentorBridge" → must be renamed to "StartConnector"
+**What the HTML still says:** "MentorBridge" → must be renamed to "StarsConnector"
 
 ---
 
 ## Demo Story (What Judges Will See)
 
 ```text
-1. Open StartConnector (live on Firebase Hosting URL)
+1. Open StarsConnector (live on Firebase Hosting URL)
 2. Create programme "Google for Startups — Fintech Cohort"
 3. Add startup "PayFast" (payments, B2C)
 4. Click "Find Mentors"
@@ -52,7 +52,7 @@
 Firebase Hosting               Cloud Run (FastAPI)          Google AI
 ────────────────               ───────────────────          ──────────
 version1/index.html ── fetch ──▶  POST /api/match    ──────▶ Gemini API
-(StartConnector UI)               GET  /api/mentors           (gemini-1.5-flash)
+(StarsConnector UI)               GET  /api/mentors           (gemini-1.5-flash)
                                   GET  /api/programmes
                                   POST /api/programmes
                                   POST /api/relationships
@@ -71,8 +71,8 @@ version1/index.html ── fetch ──▶  POST /api/match    ─────�
 **Frontend track:**
 
 - [ ] Get Gemini API key at aistudio.google.com
-- [ ] Rename all "MentorBridge" → "StartConnector" in `version1/index.html`
-- [ ] Rename all "EcoLink" → "StartConnector"
+- [ ] Rename all "MentorBridge" → "StarsConnector" in `version1/index.html`
+- [ ] Rename all "EcoLink" → "StarsConnector"
 
 **Backend track:**
 
@@ -141,9 +141,9 @@ version1/index.html ── fetch ──▶  POST /api/match    ─────�
 **Backend track — Cloud Run:**
 
 - [ ] Finish `Dockerfile`
-- [ ] `gcloud run deploy startconnector-api --source ./backend --region asia-southeast1 --allow-unauthenticated`
+- [ ] `gcloud run deploy StarsConnector-api --source ./backend --region asia-southeast1 --allow-unauthenticated`
 - [ ] Set `GEMINI_API_KEY` as Cloud Run env var
-- [ ] Note the deployed URL (e.g. `https://startconnector-api-xxxx-as.a.run.app`)
+- [ ] Note the deployed URL (e.g. `https://StarsConnector-api-xxxx-as.a.run.app`)
 
 **Frontend track — Firebase Hosting:**
 
@@ -249,7 +249,7 @@ Drop without hurting core demo:
 
 ```bash
 # Backend → Cloud Run
-gcloud run deploy startconnector-api \
+gcloud run deploy StarsConnector-api \
   --source ./backend \
   --region asia-southeast1 \
   --allow-unauthenticated \

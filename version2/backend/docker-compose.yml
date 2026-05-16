@@ -1,13 +1,11 @@
-version: "3.9"
-
 services:
   db:
     image: mysql:8.0
-    container_name: startconnector_db
+    container_name: StarsConnector_db
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: startconnector123
-      MYSQL_DATABASE: startconnector
+      MYSQL_ROOT_PASSWORD: StarsConnector123
+      MYSQL_DATABASE: StarsConnector
       MYSQL_USER: appuser
       MYSQL_PASSWORD: apppass123
     ports:
@@ -15,14 +13,14 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pstartconnector123"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pStarsConnector123"]
       interval: 5s
       timeout: 5s
       retries: 10
 
   api:
     build: .
-    container_name: startconnector_api
+    container_name: StarsConnector_api
     restart: unless-stopped
     ports:
       - "8000:8080"
@@ -31,21 +29,33 @@ services:
     environment:
       DB_HOST: db
       DB_PORT: 3306
-      DB_NAME: startconnector
-      DB_USER: root
-      DB_PASSWORD: startconnector123
+      DB_NAME: StarsConnector
+      DB_USER: appuser
+      DB_PASSWORD: apppass123
     depends_on:
       db:
         condition: service_healthy
     command: >
       sh -c "python seed.py && uvicorn main:app --host 0.0.0.0 --port 8080"
 
-  frontend:
+  frontend-simple:
     build: ../frontend-simple
-    container_name: startconnector_frontend
+    container_name: StarsConnector_frontend_simple
     restart: unless-stopped
     ports:
       - "3000:80"
+    depends_on:
+      - api
+
+  frontend-advanced:
+    build:
+      context: ../frontend-advanced
+      args:
+        VITE_API_BASE: http://localhost:8000
+    container_name: StarsConnector_frontend_advanced
+    restart: unless-stopped
+    ports:
+      - "3001:80"
     depends_on:
       - api
 

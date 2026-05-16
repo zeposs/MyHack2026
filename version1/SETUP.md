@@ -1,4 +1,4 @@
-# SETUP — StartConnector
+# SETUP — StarsConnector
 
 Step-by-step environment setup for both tracks.
 Read this before writing a single line of code.
@@ -222,7 +222,7 @@ firebase projects:list    # confirm your project appears
 Run from the project root:
 
 ```bash
-gcloud run deploy startconnector-api \
+gcloud run deploy StarsConnector-api \
   --source ./backend \
   --region asia-southeast1 \
   --allow-unauthenticated \
@@ -238,7 +238,7 @@ This will:
 On success, it prints your live API URL:
 
 ```text
-Service URL: https://startconnector-api-xxxx-as.a.run.app
+Service URL: https://StarsConnector-api-xxxx-as.a.run.app
 ```
 
 **Update `API_BASE` in `version1/index.html` to this URL before deploying the frontend.**
@@ -281,7 +281,7 @@ Hosting URL: https://[project-id].web.app
 Add your Firebase URL to the `FRONTEND_ORIGIN` env var on Cloud Run:
 
 ```bash
-gcloud run services update startconnector-api \
+gcloud run services update StarsConnector-api \
   --update-env-vars FRONTEND_ORIGIN=https://[project-id].web.app \
   --region asia-southeast1
 ```
@@ -292,7 +292,7 @@ gcloud run services update startconnector-api \
 
 Run through this checklist after deployment:
 
-- [ ] Firebase URL loads the StartConnector dashboard
+- [ ] Firebase URL loads the StarsConnector dashboard
 - [ ] Stat cards show numbers (not zeros or errors)
 - [ ] Mentor list in sidebar loads from Cloud Run
 - [ ] "Find Mentors" returns real Gemini results (check Network tab for Cloud Run URL)
@@ -312,7 +312,7 @@ Run through this checklist after deployment:
 | `firebase: command not found` | Run `npm install -g firebase-tools` first |
 | Cloud Run deploy fails | Run `gcloud auth login` and check `gcloud config get-value project` |
 | `index.html` shows blank page | Check browser console — likely a JS error on an API call |
-| API returns 500 | Check Cloud Run logs: `gcloud run services logs read startconnector-api` |
+| API returns 500 | Check Cloud Run logs: `gcloud run services logs read StarsConnector-api` |
 
 ---
 
@@ -323,13 +323,13 @@ Run through this checklist after deployment:
 uvicorn main:app --reload --port 8000
 
 # Deploy backend update
-gcloud run deploy startconnector-api --source ./backend --region asia-southeast1 --allow-unauthenticated
+gcloud run deploy StarsConnector-api --source ./backend --region asia-southeast1 --allow-unauthenticated
 
 # Deploy frontend update
 firebase deploy --only hosting
 
 # View backend logs
-gcloud run services logs read startconnector-api --region asia-southeast1
+gcloud run services logs read StarsConnector-api --region asia-southeast1
 
 # Test match endpoint locally
 curl -X POST http://localhost:8000/api/match \

@@ -1,4 +1,4 @@
-# MILESTONES — StartConnector
+# MILESTONES — StarsConnector
 
 Track progress here. Update checkboxes as each task is completed.
 **Legend:** ✅ Done · 🔄 In Progress · ⬜ Not Started
@@ -10,7 +10,7 @@ Track progress here. Update checkboxes as each task is completed.
 
 - [x] Define product vision and three core pillars
 - [x] Confirm tech stack (FastAPI + Gemini + Firebase + Cloud Run)
-- [x] Confirm project name: StartConnector
+- [x] Confirm project name: StarsConnector
 - [x] Write PRD.md — full product requirements
 - [x] Write steps-analysis.md — 5-hour execution plan
 - [x] Write API_CONTRACT.md — frontend ↔ backend JSON contract
@@ -69,8 +69,8 @@ Track progress here. Update checkboxes as each task is completed.
 ## Phase 3 — Frontend Wiring
 > Goal: index.html talks to the real backend. No more hardcoded data.
 
-- [ ] Rename all "MentorBridge" → "StartConnector" in index.html
-- [ ] Rename all "EcoLink" → "StartConnector"
+- [ ] Rename all "MentorBridge" → "StarsConnector" in index.html
+- [ ] Rename all "EcoLink" → "StarsConnector"
 - [ ] Add `const API_BASE = 'http://localhost:8000'` at top of script
 - [ ] Mentor sidebar loads from `GET /api/mentors`
 - [ ] Programme list loads from `GET /api/programmes`
@@ -150,4 +150,4 @@ If time runs out, these are the **non-negotiable** items that must be done:
 2. Match cards show score + reason + evidence in the UI
 3. Approve button works and updates the dashboard
 4. "Needs Attention" badge is visible on at least one relationship
-5. All "MentorBridge" renamed to "StartConnector"
+5. All "MentorBridge" renamed to "StarsConnector"

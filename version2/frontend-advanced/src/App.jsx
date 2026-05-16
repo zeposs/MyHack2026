@@ -249,7 +249,7 @@ export default function App() {
           <div className="brand-mark">SC</div>
           <div>
             <p className="eyebrow">Cradle ecosystem command centre</p>
-            <h1>StartConnector</h1>
+            <h1>StarsConnector</h1>
           </div>
         </div>
 

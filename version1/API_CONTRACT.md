@@ -1,4 +1,4 @@
-# API Contract — StartConnector
+# API Contract — StarsConnector
 
 **This document is the single source of truth for frontend ↔ backend communication.**
 Both tracks must follow this exactly. Any change needs to be agreed by both sides.
@@ -10,7 +10,7 @@ Both tracks must follow this exactly. Any change needs to be agreed by both side
 | Environment | URL |
 | --- | --- |
 | Local dev | `http://localhost:8000` |
-| Production | `https://startconnector-api-[hash]-as.a.run.app` |
+| Production | `https://StarsConnector-api-[hash]-as.a.run.app` |
 
 Frontend stores this as:
 

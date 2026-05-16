@@ -1,4 +1,4 @@
-# PITCH — StartConnector
+# PITCH — StarsConnector
 
 Pitch script and slide structure for the judge presentation.
 Target duration: **3–5 minutes** (adjust based on event rules).
@@ -11,7 +11,7 @@ Target duration: **3–5 minutes** (adjust based on event rules).
 | --- | --- | --- |
 | 1 | Hook — The Invisible Problem | 20s |
 | 2 | Three Failures | 30s |
-| 3 | Introducing StartConnector | 20s |
+| 3 | Introducing StarsConnector | 20s |
 | 4 | Live Demo | 90s |
 | 5 | How It Works (Google Stack) | 30s |
 | 6 | The Data Moat | 20s |
@@ -48,13 +48,13 @@ Target duration: **3–5 minutes** (adjust based on event rules).
 
 ---
 
-## Slide 3 — Introducing StartConnector (20 seconds)
+## Slide 3 — Introducing StarsConnector (20 seconds)
 
 **Visual:** Logo + tagline
 
 **Say:**
 
-> "StartConnector is an AI-powered Relationship Operating System for startup ecosystems.
+> "StarsConnector is an AI-powered Relationship Operating System for startup ecosystems.
 >
 > It treats every mentor, startup, programme, and outcome as structured data —
 > so matching, coordination, and follow-up happen automatically.
@@ -105,7 +105,7 @@ Target duration: **3–5 minutes** (adjust based on event rules).
 ### Step 5 — Needs Attention (15s)
 
 > "Back on the dashboard — this relationship has been quiet for 15 days.
-> StartConnector flagged it automatically. No spreadsheet check. No manual follow-up."
+> StarsConnector flagged it automatically. No spreadsheet check. No manual follow-up."
 
 *Point to the amber badge.*
 
@@ -153,7 +153,7 @@ Target duration: **3–5 minutes** (adjust based on event rules).
 > The second cohort gets better recommendations than the first.
 > The tenth cohort gets dramatically better than the second.
 >
-> StartConnector is not just a tool. It's a relationship memory that compounds."
+> StarsConnector is not just a tool. It's a relationship memory that compounds."
 
 ---
 
@@ -163,7 +163,7 @@ Target duration: **3–5 minutes** (adjust based on event rules).
 
 **Say:**
 
-> "StartConnector — an AI-powered Relationship Operating System for startup ecosystems.
+> "StarsConnector — an AI-powered Relationship Operating System for startup ecosystems.
 > Built on Gemini, Cloud Run, and Firebase.
 > The more programmes you run — the smarter it gets.
 > Thank you."
@@ -174,7 +174,7 @@ Target duration: **3–5 minutes** (adjust based on event rules).
 
 ### "How is this different from a CRM like Salesforce or HubSpot?"
 
-> "CRMs record what happened. StartConnector decides what should happen next.
+> "CRMs record what happened. StarsConnector decides what should happen next.
 > The AI actively matches, monitors health, and surfaces reuse opportunities.
 > It's the difference between a database and a coordinator."
 
@@ -199,7 +199,7 @@ Target duration: **3–5 minutes** (adjust based on event rules).
 ### "Why not just use ChatGPT?"
 
 > "ChatGPT has no ecosystem memory. Every query starts from scratch.
-> StartConnector's Gemini integration is connected to a structured database of relationships and outcomes.
+> StarsConnector's Gemini integration is connected to a structured database of relationships and outcomes.
 > The AI reasons from evidence, not just general knowledge.
 > Also — we're at a Google event. Gemini was the right call."
 
