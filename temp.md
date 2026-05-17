@@ -1,7 +1,7 @@
 To run locally
 
 # 1. Create MySQL database
-mysql -u root -p -e "CREATE DATABASE startconnector CHARACTER SET utf8mb4;"
+mysql -u root -p -e "CREATE DATABASE StarsConnector CHARACTER SET utf8mb4;"
 
 # 2. Copy and fill env
 copy version2\backend\.env.example version2\backend\.env
