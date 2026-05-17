@@ -20,7 +20,7 @@ class TestHealth:
         assert r.status_code == 200
         data = r.json()
         assert data["status"] == "ok"
-        assert "StartConnector" in data["service"]
+        assert "StarsConnector" in data["service"]
 
 
 # ─── Auth ─────────────────────────────────────────────────────────────────────

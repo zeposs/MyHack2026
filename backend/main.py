@@ -8,7 +8,7 @@ from routers import programmes, sessions, ecosystem, startups
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
-    title="StartConnector API",
+    title="StarsConnector API",
     description="AI-powered mentor matching for Cradle startup programmes",
     version="1.0.0",
 )
@@ -35,4 +35,4 @@ app.include_router(startups.router)
 
 @app.get("/health")
 def health():
-    return {"status": "ok", "service": "StartConnector API"}
+    return {"status": "ok", "service": "StarsConnector API"}
